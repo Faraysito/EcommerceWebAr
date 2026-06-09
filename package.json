@@ -1,0 +1,34 @@
+{
+  "name": "ecommercewebar",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Migración de Menu Web AR de restaurante a e-commerce",
+  "scripts": {
+    "start:client": "npm run preview --workspace=client",
+    "start:server": "npm start --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:both": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier . --check",
+    "format:fix": "prettier . --write"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3"
+  }
+}
