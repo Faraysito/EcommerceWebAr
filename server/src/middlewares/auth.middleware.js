@@ -3,10 +3,8 @@ const jwt = require("jsonwebtoken");
 function auth(req, res, next) {
     const cookie = req.cookie.authorization;
 
-    if (!authHeader) {
-        return res.status(401).json({
-            mensaje: "No autorizado"
-        });
+    if (!cookie) {
+        throw new AppError(HTTP_STATUS.unauthorized, "La cookie es necesaria");
     }
 
     try {
@@ -19,10 +17,9 @@ function auth(req, res, next) {
 
         next();
     } catch {
-        res.status(401).json(
-            {
-                mensaje: "Token inválido"
-            }
-        )
+        throw new AppError(HTTP_STATUS.unauthorized, "Token inválido");
     }
+
 }
+
+module.exports = "auth";
