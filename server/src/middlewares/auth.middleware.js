@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { HTTP_STATUS } from '../../utils/httpStatus.js';
+import jwt from 'jsonwebtoken'
+import { HTTP_STATUS } from '../../utils/httpStatus.js'
 import { AppError } from '../../utils/AppError.js'
 
 function auth(req, res, next) {
@@ -20,4 +20,4 @@ function auth(req, res, next) {
   }
 }
 
-export default auth;
+export default auth
