@@ -19,6 +19,18 @@ Proyecto en desarrollo activo, migrado desde un menú web AR de restaurante haci
 | Formateo      | Prettier 3              |
 | CI/CD         | GitHub Actions          |
 
+## Comandos para instalar dependencias con npm workspaces
+
+en el caso de que quieras instalar alguna dependencia para el `client` (frontend) o `server` (backend) respectivamente, debes agregar el siguiente parámetro al comando `--workspace=`
+
+```sh
+npm install express --workspace=server # Instalar dependencia en el backend
+npm install zustand --workspace=client # Instalar dependencias en el frontend
+```
+
+> [!note]
+> Si no agregas el parámetro `--workspace=`, lo que hará es instalar la dependencia en el monorepo (raíz).
+
 ## Estructura del Proyecto
 
 ```
