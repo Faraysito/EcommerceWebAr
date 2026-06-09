@@ -1,7 +1,9 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken';
+import { HTTP_STATUS } from '../../utils/httpStatus.js';
+import { AppError } from '../../utils/AppError.js'
 
 function auth(req, res, next) {
-  const cookie = req.cookie.authorization
+  const cookie = req.cookies.authorization
 
   if (!cookie) {
     throw new AppError(HTTP_STATUS.unauthorized, 'La cookie es necesaria')
@@ -18,4 +20,4 @@ function auth(req, res, next) {
   }
 }
 
-module.exports = 'auth'
+export default auth;
