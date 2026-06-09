@@ -77,6 +77,7 @@ CREATE TABLE "product_image" (
 CREATE TABLE "sale" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "status" sale_status NOT NULL DEFAULT 'Pendiente',
+  "customer_id" uuid NOT NULL,
   "total" int NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT current_timestamp
 );
@@ -99,6 +100,14 @@ CREATE TABLE "offer" (
   "start_date" timestamp NOT NULL,
   "end_date" timestamp NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT current_timestamp
+);
+
+CREATE TABLE "customer" (
+  "id" uuid DEFAULT gen_random_uuid(),
+  "email" text UNIQUE,
+  "password" text NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY ("id", "email")
 );
 
 CREATE UNIQUE INDEX ON "sale_product" ("product_id", "sale_id");
@@ -129,9 +138,10 @@ ALTER TABLE "product_image" ADD FOREIGN KEY ("product_id") REFERENCES "product" 
 
 ALTER TABLE "product_image" ADD FOREIGN KEY ("image_id") REFERENCES "image" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
+ALTER TABLE "sale" ADD FOREIGN KEY ("customer_id") REFERENCES "customer" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
 ALTER TABLE "sale_product" ADD FOREIGN KEY ("product_id") REFERENCES "product" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "sale_product" ADD FOREIGN KEY ("sale_id") REFERENCES "sale" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "offer" ADD FOREIGN KEY ("product_id") REFERENCES "product" ("id") DEFERRABLE INITIALLY IMMEDIATE;
-
