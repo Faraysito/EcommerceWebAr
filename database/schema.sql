@@ -107,7 +107,7 @@ CREATE TABLE "customer" (
   "email" text UNIQUE,
   "password" text NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT current_timestamp,
-  PRIMARY KEY ("id", "email")
+  PRIMARY KEY ("id")
 );
 
 CREATE UNIQUE INDEX ON "sale_product" ("product_id", "sale_id");
