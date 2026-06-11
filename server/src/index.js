@@ -4,6 +4,8 @@ import express from 'express'
 // Controllers and Routes
 import { healthCheckController } from './controllers/health-check.controller.js'
 import { authRouter } from './router/auth.router.js'
+import { publicRouter } from './router/public.router.js'
+import { adminRouter } from './router/admin.router.js'
 
 // Middlewares
 import cookieParser from 'cookie-parser'
@@ -19,8 +21,10 @@ app.use(express.json())
 app.use(cookieParser())
 
 // Routes
-app.use('/api/auth', authRouter)
 app.get('/api/health', healthCheckController)
+app.use('/api/auth', authRouter)
+app.use('/api', publicRouter) // /api/products, /api/categories (publico)
+app.use('/api/admin', adminRouter) // CRUD protegido
 
 // Middlewares
 app.use(notFound)

@@ -1,0 +1,112 @@
+.shell {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ff4747;
+}
+
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.email {
+  font-size: 0.88rem;
+  color: #555;
+}
+
+.badge {
+  background: #fff0e6;
+  color: #ff6a00;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.logout {
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 99px;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.logout:hover {
+  background: #ff4747;
+  border-color: #ff4747;
+  color: #fff;
+}
+
+.tabs {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 0 24px;
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tab:hover {
+  color: #ff4747;
+}
+
+.tabActive {
+  color: #ff4747;
+  border-bottom-color: #ff4747;
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.placeholder {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.placeholder h2 {
+  font-size: 1.3rem;
+  color: #222;
+  margin: 0 0 12px;
+}
+
+.placeholder p {
+  color: #888;
+  line-height: 1.6;
+  margin: 0;
+}
