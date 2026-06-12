@@ -29,6 +29,11 @@ import {
   createUserController,
   deleteUserController
 } from '../controllers/users/user.controller.js'
+import {
+  getOffersController,
+  createOfferController,
+  deleteOfferController
+} from '../controllers/offers/offer.controller.js'
 
 // Todas las rutas de este router pasan primero por auth (cookie JWT valida).
 const adminRouter = Router()
@@ -53,6 +58,11 @@ adminRouter.delete('/images/:id', requirePermission('image.delete'), deleteImage
 adminRouter.get('/models', requirePermission('model.read'), getModelsController)
 adminRouter.post('/models', requirePermission('model.create'), uploadModelMiddleware, uploadModelController)
 adminRouter.delete('/models/:id', requirePermission('model.delete'), deleteModelController)
+
+// --- Ofertas ---
+adminRouter.get('/offers', requirePermission('offer.read'), getOffersController)
+adminRouter.post('/offers', requirePermission('offer.create'), createOfferController)
+adminRouter.delete('/offers/:id', requirePermission('offer.delete'), deleteOfferController)
 
 // --- Usuarios ---
 adminRouter.get('/users', requirePermission('user.read'), getUsersController)

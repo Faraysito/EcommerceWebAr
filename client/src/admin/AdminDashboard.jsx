@@ -2,20 +2,20 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../context/AuthContext'
 import CategoriesManager from './CategoriesManager'
+import ProductsManager from './ProductsManager'
+import FilesManager from './FilesManager'
 import styles from './AdminDashboard.module.css'
 
-// Pestañas del panel. Por ahora solo Categorias; Productos y Archivos se
-// agregan en la siguiente fase.
 const TABS = [
-  { id: 'categories', label: 'Categorías' },
   { id: 'products', label: 'Productos' },
+  { id: 'categories', label: 'Categorías' },
   { id: 'files', label: 'Archivos' }
 ]
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('categories')
+  const [activeTab, setActiveTab] = useState('products')
 
   const handleLogout = async () => {
     await logout()
@@ -48,21 +48,9 @@ export default function AdminDashboard() {
       </nav>
 
       <main className={styles.main}>
+        {activeTab === 'products' && <ProductsManager />}
         {activeTab === 'categories' && <CategoriesManager />}
-
-        {activeTab === 'products' && (
-          <div className={styles.placeholder}>
-            <h2>Productos</h2>
-            <p>El CRUD de productos y el uploader de imágenes/modelos mas adelante wajdsak</p>
-          </div>
-        )}
-
-        {activeTab === 'files' && (
-          <div className={styles.placeholder}>
-            <h2>Archivos</h2>
-            <p>La gestión de imágenes y modelos 3D mas adelante wajdsak.</p>
-          </div>
-        )}
+        {activeTab === 'files' && <FilesManager />}
       </main>
     </div>
   )
