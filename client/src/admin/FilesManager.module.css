@@ -1,0 +1,137 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.uploadBtn {
+  background: linear-gradient(135deg, #ff6a00, #ff4747);
+  color: #fff;
+  border-radius: 99px;
+  padding: 9px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.uploadBtn:hover {
+  filter: brightness(1.05);
+}
+
+.error {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1px solid #f5c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+}
+
+.muted {
+  color: #999;
+  font-size: 0.9rem;
+  padding: 12px 0;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.imageCard {
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #eee;
+}
+
+.fileName {
+  font-size: 0.75rem;
+  color: #555;
+  padding: 8px 8px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deleteBtn {
+  margin: 6px 8px 8px;
+  background: #fff;
+  color: #e24b4a;
+  border: 1px solid #f0b0b0;
+  border-radius: 99px;
+  padding: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.deleteBtn:hover {
+  background: #e24b4a;
+  color: #fff;
+}
+
+.modelList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modelItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.modelIcon {
+  color: #ff6a00;
+  font-size: 1.1rem;
+}
+
+.modelItem .fileName {
+  flex: 1;
+  padding: 0;
+  font-size: 0.88rem;
+}
+
+.modelItem .deleteBtn {
+  margin: 0;
+  padding: 5px 14px;
+}

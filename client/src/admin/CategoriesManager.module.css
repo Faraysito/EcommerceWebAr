@@ -1,0 +1,152 @@
+.wrapper {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 20px;
+}
+
+.createForm {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: #ff4747;
+}
+
+.inputInline {
+  flex: 1;
+  border: 1px solid #ff4747;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #ff6a00, #ff4747);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.15s;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1px solid #f5c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.muted {
+  color: #999;
+  font-size: 0.9rem;
+  padding: 16px 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btnGhost,
+.btnDanger,
+.btnSave {
+  border: none;
+  border-radius: 99px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnGhost {
+  background: #eee;
+  color: #555;
+}
+
+.btnGhost:hover {
+  background: #e0e0e0;
+}
+
+.btnDanger {
+  background: #fff;
+  color: #e24b4a;
+  border: 1px solid #f0b0b0;
+}
+
+.btnDanger:hover {
+  background: #e24b4a;
+  color: #fff;
+}
+
+.btnSave {
+  background: #1a8a44;
+  color: #fff;
+}
+
+.btnSave:hover {
+  filter: brightness(1.1);
+}

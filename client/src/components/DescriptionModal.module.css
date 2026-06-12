@@ -1,0 +1,43 @@
+.wrapper {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.thumb {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  gap: 10px;
+}
+
+.stockBadge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 99px;
+}
+
+.inStock {
+  background: #e7f7ec;
+  color: #1a8a44;
+}
+
+.outStock {
+  background: #fdeaea;
+  color: #c0392b;
+}
