@@ -6,7 +6,9 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #f0f0f0;
-  transition: box-shadow 0.18s, transform 0.18s;
+  transition:
+    box-shadow 0.18s,
+    transform 0.18s;
 }
 
 .card:hover {
@@ -64,7 +66,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  height: 150px;
+  height: 196px;
 }
 
 .name {
@@ -104,12 +106,51 @@
   color: #888;
 }
 
-/* Botones pegados abajo: margin-top auto los empuja al fondo, asi quedan
-   alineados entre cards aunque el resto varie. */
+/* La primera fila de acciones (Agregar) se empuja al fondo; la segunda
+   (Detalles / Ver AR) queda justo debajo. */
 .actions {
   display: flex;
   gap: 8px;
+}
+
+.actions:first-of-type {
   margin-top: auto;
+}
+
+.actions + .actions {
+  margin-top: 8px;
+}
+
+.btnCart {
+  flex: 1;
+  border: none;
+  border-radius: 99px;
+  padding: 9px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fff3ec;
+  color: #ff6a00;
+  border: 1px solid #ffd9bf;
+  transition:
+    background 0.15s,
+    filter 0.15s;
+}
+
+.btnCart:hover:not(:disabled) {
+  background: #ffe8d6;
+}
+
+.btnCart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f2f2f2;
+  color: #999;
+  border-color: #e6e6e6;
 }
 
 .btnDesc,
@@ -125,7 +166,9 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  transition: filter 0.15s, background 0.15s;
+  transition:
+    filter 0.15s,
+    background 0.15s;
 }
 
 .btnDesc {

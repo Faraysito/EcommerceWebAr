@@ -4,12 +4,14 @@ import { useAuth } from '../context/AuthContext'
 import CategoriesManager from './CategoriesManager'
 import ProductsManager from './ProductsManager'
 import FilesManager from './FilesManager'
+import UsersManager from './UsersManager'
 import styles from './AdminDashboard.module.css'
 
 const TABS = [
   { id: 'products', label: 'Productos' },
   { id: 'categories', label: 'Categorías' },
-  { id: 'files', label: 'Archivos' }
+  { id: 'files', label: 'Archivos' },
+  { id: 'users', label: 'Usuarios' }
 ]
 
 export default function AdminDashboard() {
@@ -29,14 +31,17 @@ export default function AdminDashboard() {
         <div className={styles.userBox}>
           <span className={styles.email}>{user?.email}</span>
           {user?.isSuperAdmin && <span className={styles.badge}>Superadmin</span>}
-          <button className={styles.logout} onClick={handleLogout}>
+          <button
+            className={styles.logout}
+            onClick={handleLogout}
+          >
             Cerrar sesión
           </button>
         </div>
       </header>
 
       <nav className={styles.tabs}>
-        {TABS.map((tab) => (
+        {TABS.map(tab => (
           <button
             key={tab.id}
             className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ''}`}
@@ -51,6 +56,7 @@ export default function AdminDashboard() {
         {activeTab === 'products' && <ProductsManager />}
         {activeTab === 'categories' && <CategoriesManager />}
         {activeTab === 'files' && <FilesManager />}
+        {activeTab === 'users' && <UsersManager />}
       </main>
     </div>
   )

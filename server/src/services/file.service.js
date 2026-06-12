@@ -58,9 +58,10 @@ const listImages = async () => {
     .select('id, name, file_key')
     .order('created_at', { ascending: false })
 
-  if (error) throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar las imágenes')
+  if (error)
+    throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar las imágenes')
 
-  return data.map((img) => ({ id: img.id, name: img.name, url: publicUrl(img.file_key) }))
+  return data.map(img => ({ id: img.id, name: img.name, url: publicUrl(img.file_key) }))
 }
 
 const deleteImage = async ({ id }) => {
@@ -101,9 +102,10 @@ const listModels = async () => {
     .select('id, name, file_key')
     .order('created_at', { ascending: false })
 
-  if (error) throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar los modelos')
+  if (error)
+    throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar los modelos')
 
-  return data.map((m) => ({ id: m.id, name: m.name, url: publicUrl(m.file_key) }))
+  return data.map(m => ({ id: m.id, name: m.name, url: publicUrl(m.file_key) }))
 }
 
 const deleteModel = async ({ id }) => {

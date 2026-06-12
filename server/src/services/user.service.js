@@ -4,9 +4,7 @@ import { HTTP_STATUS } from '../utils/httpStatus.js'
 
 // Crea un usuario. OJO: Supabase devuelve { data, error }, no { success }.
 const createUser = async ({ email, password, roleId }) => {
-  const { error } = await supabase
-    .from('user')
-    .insert({ email, password, role_id: roleId })
+  const { error } = await supabase.from('user').insert({ email, password, role_id: roleId })
 
   if (error) {
     // 23505 = unique_violation (email ya existe)
@@ -54,7 +52,7 @@ const getRolePermissions = async ({ roleId }) => {
 
   if (error || !data) return []
 
-  return data.map((row) => row.permission?.name).filter(Boolean)
+  return data.map(row => row.permission?.name).filter(Boolean)
 }
 
 // Lista todos los usuarios (para el panel de gestion de usuarios del admin).
@@ -80,4 +78,18 @@ const deleteUser = async ({ id }) => {
   }
 }
 
-export { createUser, getUserByEmail, getRolePermissions, listUsers, deleteUser }
+// Lista todos los roles (para el selector del form de crear usuario).
+const listRoles = async () => {
+  const { data, error } = await supabase
+    .from('role')
+    .select('id, name')
+    .order('name', { ascending: true })
+
+  if (error) {
+    throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar los roles')
+  }
+
+  return data
+}
+
+export { createUser, getUserByEmail, getRolePermissions, listUsers, deleteUser, listRoles }

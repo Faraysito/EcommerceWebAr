@@ -37,7 +37,7 @@ export default function CategoriesManager() {
     load()
   }, [])
 
-  const handleCreate = async (e) => {
+  const handleCreate = async e => {
     e.preventDefault()
     if (!newName.trim()) return
     setCreating(true)
@@ -53,7 +53,7 @@ export default function CategoriesManager() {
     }
   }
 
-  const startEdit = (cat) => {
+  const startEdit = cat => {
     setEditingId(cat.id)
     setEditName(cat.name)
     setError('')
@@ -64,7 +64,7 @@ export default function CategoriesManager() {
     setEditName('')
   }
 
-  const saveEdit = async (id) => {
+  const saveEdit = async id => {
     if (!editName.trim()) return
     setError('')
     try {
@@ -76,7 +76,7 @@ export default function CategoriesManager() {
     }
   }
 
-  const handleDelete = async (cat) => {
+  const handleDelete = async cat => {
     if (!confirm(`¿Eliminar la categoría "${cat.name}"?`)) return
     setError('')
     try {
@@ -92,15 +92,22 @@ export default function CategoriesManager() {
     <div className={styles.wrapper}>
       <h2 className={styles.title}>Categorías</h2>
 
-      <form className={styles.createForm} onSubmit={handleCreate}>
+      <form
+        className={styles.createForm}
+        onSubmit={handleCreate}
+      >
         <input
           className={styles.input}
           value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          placeholder="Nueva categoría (ej. Anime)"
+          onChange={e => setNewName(e.target.value)}
+          placeholder='Nueva categoría (ej. Anime)'
           disabled={creating}
         />
-        <button className={styles.btnPrimary} type="submit" disabled={creating || !newName.trim()}>
+        <button
+          className={styles.btnPrimary}
+          type='submit'
+          disabled={creating || !newName.trim()}
+        >
           {creating ? 'Creando…' : 'Agregar'}
         </button>
       </form>
@@ -113,21 +120,30 @@ export default function CategoriesManager() {
         <p className={styles.muted}>No hay categorías todavía.</p>
       ) : (
         <ul className={styles.list}>
-          {categories.map((cat) => (
-            <li key={cat.id} className={styles.item}>
+          {categories.map(cat => (
+            <li
+              key={cat.id}
+              className={styles.item}
+            >
               {editingId === cat.id ? (
                 <>
                   <input
                     className={styles.inputInline}
                     value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
+                    onChange={e => setEditName(e.target.value)}
                     autoFocus
                   />
                   <div className={styles.actions}>
-                    <button className={styles.btnSave} onClick={() => saveEdit(cat.id)}>
+                    <button
+                      className={styles.btnSave}
+                      onClick={() => saveEdit(cat.id)}
+                    >
                       Guardar
                     </button>
-                    <button className={styles.btnGhost} onClick={cancelEdit}>
+                    <button
+                      className={styles.btnGhost}
+                      onClick={cancelEdit}
+                    >
                       Cancelar
                     </button>
                   </div>
@@ -136,10 +152,16 @@ export default function CategoriesManager() {
                 <>
                   <span className={styles.name}>{cat.name}</span>
                   <div className={styles.actions}>
-                    <button className={styles.btnGhost} onClick={() => startEdit(cat)}>
+                    <button
+                      className={styles.btnGhost}
+                      onClick={() => startEdit(cat)}
+                    >
                       Editar
                     </button>
-                    <button className={styles.btnDanger} onClick={() => handleDelete(cat)}>
+                    <button
+                      className={styles.btnDanger}
+                      onClick={() => handleDelete(cat)}
+                    >
                       Eliminar
                     </button>
                   </div>

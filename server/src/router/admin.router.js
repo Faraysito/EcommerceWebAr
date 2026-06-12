@@ -1,10 +1,7 @@
 import { Router } from 'express'
 import auth from '../middlewares/auth.middleware.js'
 import { requirePermission } from '../middlewares/permission.middleware.js'
-import {
-  uploadImageMiddleware,
-  uploadModelMiddleware
-} from '../middlewares/upload.middleware.js'
+import { uploadImageMiddleware, uploadModelMiddleware } from '../middlewares/upload.middleware.js'
 
 import {
   createProductController,
@@ -26,6 +23,7 @@ import {
 } from '../controllers/files/file.controller.js'
 import {
   getUsersController,
+  getRolesController,
   createUserController,
   deleteUserController
 } from '../controllers/users/user.controller.js'
@@ -47,16 +45,30 @@ adminRouter.delete('/products/:id', requirePermission('product.delete'), deleteP
 // --- Categorias ---
 adminRouter.post('/categories', requirePermission('category.create'), createCategoryController)
 adminRouter.put('/categories/:id', requirePermission('category.update'), updateCategoryController)
-adminRouter.delete('/categories/:id', requirePermission('category.delete'), deleteCategoryController)
+adminRouter.delete(
+  '/categories/:id',
+  requirePermission('category.delete'),
+  deleteCategoryController
+)
 
 // --- Imagenes ---
 adminRouter.get('/images', requirePermission('image.read'), getImagesController)
-adminRouter.post('/images', requirePermission('image.create'), uploadImageMiddleware, uploadImageController)
+adminRouter.post(
+  '/images',
+  requirePermission('image.create'),
+  uploadImageMiddleware,
+  uploadImageController
+)
 adminRouter.delete('/images/:id', requirePermission('image.delete'), deleteImageController)
 
 // --- Modelos 3D ---
 adminRouter.get('/models', requirePermission('model.read'), getModelsController)
-adminRouter.post('/models', requirePermission('model.create'), uploadModelMiddleware, uploadModelController)
+adminRouter.post(
+  '/models',
+  requirePermission('model.create'),
+  uploadModelMiddleware,
+  uploadModelController
+)
 adminRouter.delete('/models/:id', requirePermission('model.delete'), deleteModelController)
 
 // --- Ofertas ---
@@ -66,6 +78,7 @@ adminRouter.delete('/offers/:id', requirePermission('offer.delete'), deleteOffer
 
 // --- Usuarios ---
 adminRouter.get('/users', requirePermission('user.read'), getUsersController)
+adminRouter.get('/roles', requirePermission('user.read'), getRolesController)
 adminRouter.post('/users', requirePermission('user.create'), createUserController)
 adminRouter.delete('/users/:id', requirePermission('user.delete'), deleteUserController)
 

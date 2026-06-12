@@ -1,11 +1,15 @@
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
-import { createUser, listUsers, deleteUser } from '../../services/user.service.js'
+import { createUser, listUsers, deleteUser, listRoles } from '../../services/user.service.js'
 import { HTTP_STATUS } from '../../utils/httpStatus.js'
 import { AppError } from '../../utils/AppError.js'
 
 const getUsersController = async (req, res) => {
   return res.status(HTTP_STATUS.ok).json(await listUsers())
+}
+
+const getRolesController = async (req, res) => {
+  return res.status(HTTP_STATUS.ok).json(await listRoles())
 }
 
 const createUserSchema = z.object({
@@ -33,4 +37,4 @@ const deleteUserController = async (req, res) => {
   return res.status(HTTP_STATUS.noContent).end()
 }
 
-export { getUsersController, createUserController, deleteUserController }
+export { getUsersController, getRolesController, createUserController, deleteUserController }

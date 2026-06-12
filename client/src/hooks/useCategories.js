@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { getCategories } from "../services/categories/getCategories";
+import { useEffect, useState } from 'react'
+import { getCategories } from '../services/categories/getCategories'
 
 export const useCategories = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("");
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [activeCategory, setActiveCategory] = useState('')
 
   useEffect(() => {
     getCategories()
-      .then((cats) => {
-        setCategories(cats);
-        setActiveCategory(cats[0]?.id ?? "");
+      .then(cats => {
+        setCategories(cats)
+        setActiveCategory(cats[0]?.id ?? '')
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [])
 
   return {
     categories,
@@ -22,6 +22,6 @@ export const useCategories = () => {
     loading,
     setLoading,
     activeCategory,
-    setActiveCategory,
-  };
-};
+    setActiveCategory
+  }
+}

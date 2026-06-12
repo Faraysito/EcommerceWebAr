@@ -30,7 +30,7 @@ function publicUrl(fileKey) {
 // discountedPrice (asi nadie hace trampa con el reloj del navegador).
 function applyOffer(product) {
   const now = Date.now()
-  const activeOffer = (product.offer ?? []).find((o) => {
+  const activeOffer = (product.offer ?? []).find(o => {
     const start = new Date(o.start_date).getTime()
     const end = new Date(o.end_date).getTime()
     return now >= start && now <= end
@@ -58,9 +58,9 @@ function applyOffer(product) {
 // Normaliza la fila cruda de Supabase a la forma que consume el frontend.
 function shapeProduct(row) {
   const images = (row.product_image ?? [])
-    .map((pi) => pi.image)
+    .map(pi => pi.image)
     .filter(Boolean)
-    .map((img) => ({ id: img.id, name: img.name, url: publicUrl(img.file_key) }))
+    .map(img => ({ id: img.id, name: img.name, url: publicUrl(img.file_key) }))
 
   const { discountActive, discountedPrice, discountPercent } = applyOffer(row)
 
@@ -109,7 +109,15 @@ const getProductById = async ({ id }) => {
 }
 
 // Crea un producto y, si vienen imageIds, las vincula en product_image.
-const createProduct = async ({ name, description, price, stock, categoryId, modelId, imageIds }) => {
+const createProduct = async ({
+  name,
+  description,
+  price,
+  stock,
+  categoryId,
+  modelId,
+  imageIds
+}) => {
   const { data, error } = await supabase
     .from('product')
     .insert({
@@ -132,7 +140,16 @@ const createProduct = async ({ name, description, price, stock, categoryId, mode
   return getProductById({ id: data.id })
 }
 
-const updateProduct = async ({ id, name, description, price, stock, categoryId, modelId, imageIds }) => {
+const updateProduct = async ({
+  id,
+  name,
+  description,
+  price,
+  stock,
+  categoryId,
+  modelId,
+  imageIds
+}) => {
   const { error } = await supabase
     .from('product')
     .update({
@@ -171,7 +188,7 @@ const deleteProduct = async ({ id }) => {
 // Helper: vincula imagenes a un producto en la tabla product_image.
 async function linkImages(productId, imageIds) {
   if (!Array.isArray(imageIds) || imageIds.length === 0) return
-  const rows = imageIds.map((imageId) => ({ product_id: productId, image_id: imageId }))
+  const rows = imageIds.map(imageId => ({ product_id: productId, image_id: imageId }))
   const { error } = await supabase.from('product_image').insert(rows)
   if (error) {
     throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron vincular las imágenes')

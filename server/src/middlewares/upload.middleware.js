@@ -31,7 +31,7 @@ const modelUpload = makeUploader({ allowedTypes: MODEL_TYPES, maxSizeMb: 50, all
 // excedido) en AppError con mensaje claro.
 function wrapMulter(uploader) {
   return (req, res, next) => {
-    uploader(req, res, (err) => {
+    uploader(req, res, err => {
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
           return next(new AppError(HTTP_STATUS.badRequest, 'El archivo es demasiado grande'))

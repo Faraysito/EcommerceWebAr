@@ -125,11 +125,6 @@ npm run dev:client   # Cliente en http://localhost:5173
 
 ## Documentación por Módulo
 
-
-
-
-
-
 # EcommerceWebAR
 
 Tienda e-commerce de figuras coleccionables con visualización en **Realidad Aumentada**. Los clientes navegan el catálogo, ven los detalles de cada figura y la proyectan en su espacio mediante AR antes de comprar. Incluye un panel de administración con autenticación y permisos para gestionar el catálogo.
@@ -145,15 +140,15 @@ Tienda e-commerce de figuras coleccionables con visualización en **Realidad Aum
 
 ## Stack
 
-| Capa        | Tecnología                                          |
-| ----------- | --------------------------------------------------- |
-| Frontend    | React 19, React Router 7, Vite, CSS Modules         |
-| Backend     | Express 5, Node.js                                  |
-| AR          | Google `<model-viewer>` (WebXR, Scene Viewer, Quick Look) |
-| Auth        | JWT en cookie httpOnly + bcrypt                     |
-| Base de datos | Supabase (PostgreSQL)                             |
-| Storage     | Supabase Storage (imágenes y modelos 3D)            |
-| Validación  | Zod                                                 |
+| Capa          | Tecnología                                                |
+| ------------- | --------------------------------------------------------- |
+| Frontend      | React 19, React Router 7, Vite, CSS Modules               |
+| Backend       | Express 5, Node.js                                        |
+| AR            | Google `<model-viewer>` (WebXR, Scene Viewer, Quick Look) |
+| Auth          | JWT en cookie httpOnly + bcrypt                           |
+| Base de datos | Supabase (PostgreSQL)                                     |
+| Storage       | Supabase Storage (imágenes y modelos 3D)                  |
+| Validación    | Zod                                                       |
 
 ## Estructura del proyecto
 
@@ -265,18 +260,21 @@ cd client && npm run dev
 ## Endpoints de la API
 
 ### Públicos
+
 - `GET /api/health`
 - `GET /api/products`
 - `GET /api/products/:id`
 - `GET /api/categories`
 
 ### Autenticación
+
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `POST /api/auth/register`
 - `GET /api/auth/verify`
 
 ### Admin (requieren sesión y permiso)
+
 - Productos: `POST` · `PUT /:id` · `DELETE /:id` en `/api/admin/products`
 - Categorías: `POST` · `PUT /:id` · `DELETE /:id` en `/api/admin/categories`
 - Imágenes: `GET` · `POST` (multipart) · `DELETE /:id` en `/api/admin/images`

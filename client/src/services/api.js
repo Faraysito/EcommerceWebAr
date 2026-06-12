@@ -30,12 +30,10 @@ async function request(path, options = {}) {
 }
 
 // Atajos para los verbos comunes.
-export const apiGet = (path) => request(path)
-export const apiPost = (path, body) =>
-  request(path, { method: 'POST', body: JSON.stringify(body) })
-export const apiPut = (path, body) =>
-  request(path, { method: 'PUT', body: JSON.stringify(body) })
-export const apiDelete = (path) => request(path, { method: 'DELETE' })
+export const apiGet = path => request(path)
+export const apiPost = (path, body) => request(path, { method: 'POST', body: JSON.stringify(body) })
+export const apiPut = (path, body) => request(path, { method: 'PUT', body: JSON.stringify(body) })
+export const apiDelete = path => request(path, { method: 'DELETE' })
 
 // Upload multipart (imagenes / modelos). No pone Content-Type: el navegador lo
 // setea solo con el boundary correcto al usar FormData.

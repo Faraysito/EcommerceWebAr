@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { login as loginRequest, logout as logoutRequest, verifySession } from '../services/auth/authService'
+import {
+  login as loginRequest,
+  logout as logoutRequest,
+  verifySession
+} from '../services/auth/authService'
 
 // Contexto de autenticacion. Guarda el usuario logueado y expone helpers para
 // login, logout y chequeo de permisos. Lo consume todo el panel admin.
@@ -13,12 +17,12 @@ export function AuthProvider({ children }) {
   // Al montar, pregunta al backend si hay sesion activa (cookie valida).
   useEffect(() => {
     verifySession()
-      .then((data) => setUser(data))
+      .then(data => setUser(data))
       .catch(() => setUser(null)) // 401 = no logueado, es esperado
       .finally(() => setLoading(false))
   }, [])
 
-  const login = async (credentials) => {
+  const login = async credentials => {
     const data = await loginRequest(credentials)
     setUser(data)
     return data
@@ -31,7 +35,7 @@ export function AuthProvider({ children }) {
 
   // Chequeo de permisos en el cliente (solo para mostrar/ocultar UI; la
   // seguridad real la aplica el backend). Superadmin siempre true.
-  const hasPermission = (permission) => {
+  const hasPermission = permission => {
     if (!user) return false
     if (user.isSuperAdmin) return true
     return (user.permissions ?? []).includes(permission)

@@ -69,7 +69,7 @@ export default function ProductsManager() {
     setError('')
   }
 
-  const openEdit = (product) => {
+  const openEdit = product => {
     setEditingId(product.id)
     setForm({
       name: product.name,
@@ -78,7 +78,7 @@ export default function ProductsManager() {
       stock: String(product.stock),
       categoryId: product.categoryId || '',
       modelId: product.model ? findModelId(product) : '',
-      imageIds: (product.images || []).map((i) => i.id)
+      imageIds: (product.images || []).map(i => i.id)
     })
     setShowForm(true)
     setError('')
@@ -86,22 +86,22 @@ export default function ProductsManager() {
 
   // El producto trae el modelo como URL; para preseleccionar en el form
   // buscamos su id en la lista de modelos por coincidencia de URL.
-  const findModelId = (product) => {
-    const match = models.find((m) => m.url === product.model)
+  const findModelId = product => {
+    const match = models.find(m => m.url === product.model)
     return match?.id || ''
   }
 
-  const toggleImage = (imageId) => {
-    setForm((f) => {
+  const toggleImage = imageId => {
+    setForm(f => {
       const has = f.imageIds.includes(imageId)
       return {
         ...f,
-        imageIds: has ? f.imageIds.filter((id) => id !== imageId) : [...f.imageIds, imageId]
+        imageIds: has ? f.imageIds.filter(id => id !== imageId) : [...f.imageIds, imageId]
       }
     })
   }
 
-  const handleSave = async (e) => {
+  const handleSave = async e => {
     e.preventDefault()
     setSaving(true)
     setError('')
@@ -129,7 +129,7 @@ export default function ProductsManager() {
     }
   }
 
-  const handleDelete = async (product) => {
+  const handleDelete = async product => {
     if (!confirm(`¿Eliminar el producto "${product.name}"?`)) return
     setError('')
     try {
@@ -141,7 +141,7 @@ export default function ProductsManager() {
   }
 
   // ----- Ofertas de un producto -----
-  const offersOf = (productId) => offers.filter((o) => o.product_id === productId)
+  const offersOf = productId => offers.filter(o => o.product_id === productId)
 
   const [offerForm, setOfferForm] = useState(null) // { productId } o null
   const [offerData, setOfferData] = useState({
@@ -151,7 +151,7 @@ export default function ProductsManager() {
     endDate: ''
   })
 
-  const handleCreateOffer = async (e) => {
+  const handleCreateOffer = async e => {
     e.preventDefault()
     setError('')
     try {
@@ -170,7 +170,7 @@ export default function ProductsManager() {
     }
   }
 
-  const handleDeleteOffer = async (id) => {
+  const handleDeleteOffer = async id => {
     if (!confirm('¿Eliminar esta oferta?')) return
     try {
       await deleteOffer(id)
@@ -180,13 +180,16 @@ export default function ProductsManager() {
     }
   }
 
-  const formatCLP = (n) => '$' + Number(n).toLocaleString('es-CL')
+  const formatCLP = n => '$' + Number(n).toLocaleString('es-CL')
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <h2 className={styles.title}>Productos</h2>
-        <button className={styles.btnPrimary} onClick={openCreate}>
+        <button
+          className={styles.btnPrimary}
+          onClick={openCreate}
+        >
           + Nuevo producto
         </button>
       </div>
@@ -199,10 +202,13 @@ export default function ProductsManager() {
         <p className={styles.muted}>No hay productos todavía. Crea el primero.</p>
       ) : (
         <div className={styles.productList}>
-          {products.map((product) => {
+          {products.map(product => {
             const productOffers = offersOf(product.id)
             return (
-              <div key={product.id} className={styles.productCard}>
+              <div
+                key={product.id}
+                className={styles.productCard}
+              >
                 <img
                   src={product.image || ''}
                   alt={product.name}
@@ -224,8 +230,11 @@ export default function ProductsManager() {
                   {/* Ofertas del producto */}
                   {productOffers.length > 0 && (
                     <div className={styles.offersBox}>
-                      {productOffers.map((o) => (
-                        <div key={o.id} className={styles.offerRow}>
+                      {productOffers.map(o => (
+                        <div
+                          key={o.id}
+                          className={styles.offerRow}
+                        >
                           <span>
                             {o.discount_type === 'PERCENTAGE'
                               ? `${o.discount_value}%`
@@ -246,7 +255,10 @@ export default function ProductsManager() {
                 </div>
 
                 <div className={styles.productActions}>
-                  <button className={styles.btnGhost} onClick={() => openEdit(product)}>
+                  <button
+                    className={styles.btnGhost}
+                    onClick={() => openEdit(product)}
+                  >
                     Editar
                   </button>
                   <button
@@ -255,7 +267,10 @@ export default function ProductsManager() {
                   >
                     + Oferta
                   </button>
-                  <button className={styles.btnDanger} onClick={() => handleDelete(product)}>
+                  <button
+                    className={styles.btnDanger}
+                    onClick={() => handleDelete(product)}
+                  >
                     Eliminar
                   </button>
                 </div>
@@ -267,10 +282,13 @@ export default function ProductsManager() {
 
       {/* MODAL: formulario de producto */}
       {showForm && (
-        <div className={styles.modalOverlay} onClick={() => setShowForm(false)}>
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setShowForm(false)}
+        >
           <form
             className={styles.modal}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             onSubmit={handleSave}
           >
             <h3 className={styles.modalTitle}>
@@ -282,7 +300,7 @@ export default function ProductsManager() {
               <input
                 className={styles.input}
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={e => setForm({ ...form, name: e.target.value })}
                 required
               />
             </label>
@@ -292,7 +310,7 @@ export default function ProductsManager() {
               <textarea
                 className={styles.textarea}
                 value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                onChange={e => setForm({ ...form, description: e.target.value })}
                 rows={3}
               />
             </label>
@@ -301,22 +319,22 @@ export default function ProductsManager() {
               <label className={styles.label}>
                 Precio (CLP)
                 <input
-                  type="number"
+                  type='number'
                   className={styles.input}
                   value={form.price}
-                  onChange={(e) => setForm({ ...form, price: e.target.value })}
-                  min="1"
+                  onChange={e => setForm({ ...form, price: e.target.value })}
+                  min='1'
                   required
                 />
               </label>
               <label className={styles.label}>
                 Stock
                 <input
-                  type="number"
+                  type='number'
                   className={styles.input}
                   value={form.stock}
-                  onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                  min="0"
+                  onChange={e => setForm({ ...form, stock: e.target.value })}
+                  min='0'
                   required
                 />
               </label>
@@ -327,12 +345,17 @@ export default function ProductsManager() {
               <select
                 className={styles.input}
                 value={form.categoryId}
-                onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+                onChange={e => setForm({ ...form, categoryId: e.target.value })}
                 required
               >
-                <option value="">Seleccionar…</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
+                <option value=''>Seleccionar…</option>
+                {categories.map(c => (
+                  <option
+                    key={c.id}
+                    value={c.id}
+                  >
+                    {c.name}
+                  </option>
                 ))}
               </select>
             </label>
@@ -342,11 +365,16 @@ export default function ProductsManager() {
               <select
                 className={styles.input}
                 value={form.modelId}
-                onChange={(e) => setForm({ ...form, modelId: e.target.value })}
+                onChange={e => setForm({ ...form, modelId: e.target.value })}
               >
-                <option value="">Sin modelo</option>
-                {models.map((m) => (
-                  <option key={m.id} value={m.id}>{m.name}</option>
+                <option value=''>Sin modelo</option>
+                {models.map(m => (
+                  <option
+                    key={m.id}
+                    value={m.id}
+                  >
+                    {m.name}
+                  </option>
                 ))}
               </select>
             </label>
@@ -359,17 +387,20 @@ export default function ProductsManager() {
                 </p>
               ) : (
                 <div className={styles.imagePicker}>
-                  {images.map((img) => {
+                  {images.map(img => {
                     const selected = form.imageIds.includes(img.id)
                     return (
                       <button
-                        type="button"
+                        type='button'
                         key={img.id}
                         className={`${styles.pickItem} ${selected ? styles.pickSelected : ''}`}
                         onClick={() => toggleImage(img.id)}
                         title={img.name}
                       >
-                        <img src={img.url} alt={img.name} />
+                        <img
+                          src={img.url}
+                          alt={img.name}
+                        />
                         {selected && <span className={styles.check}>✓</span>}
                       </button>
                     )
@@ -379,10 +410,18 @@ export default function ProductsManager() {
             </div>
 
             <div className={styles.modalActions}>
-              <button type="button" className={styles.btnGhost} onClick={() => setShowForm(false)}>
+              <button
+                type='button'
+                className={styles.btnGhost}
+                onClick={() => setShowForm(false)}
+              >
                 Cancelar
               </button>
-              <button type="submit" className={styles.btnPrimary} disabled={saving}>
+              <button
+                type='submit'
+                className={styles.btnPrimary}
+                disabled={saving}
+              >
                 {saving ? 'Guardando…' : 'Guardar'}
               </button>
             </div>
@@ -392,10 +431,13 @@ export default function ProductsManager() {
 
       {/* MODAL: nueva oferta */}
       {offerForm && (
-        <div className={styles.modalOverlay} onClick={() => setOfferForm(null)}>
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setOfferForm(null)}
+        >
           <form
             className={styles.modal}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             onSubmit={handleCreateOffer}
           >
             <h3 className={styles.modalTitle}>Nueva oferta</h3>
@@ -405,21 +447,21 @@ export default function ProductsManager() {
               <select
                 className={styles.input}
                 value={offerData.discountType}
-                onChange={(e) => setOfferData({ ...offerData, discountType: e.target.value })}
+                onChange={e => setOfferData({ ...offerData, discountType: e.target.value })}
               >
-                <option value="PERCENTAGE">Porcentaje (%)</option>
-                <option value="FIXED">Monto fijo (CLP)</option>
+                <option value='PERCENTAGE'>Porcentaje (%)</option>
+                <option value='FIXED'>Monto fijo (CLP)</option>
               </select>
             </label>
 
             <label className={styles.label}>
               {offerData.discountType === 'PERCENTAGE' ? 'Porcentaje (1-100)' : 'Monto (CLP)'}
               <input
-                type="number"
+                type='number'
                 className={styles.input}
                 value={offerData.discountValue}
-                onChange={(e) => setOfferData({ ...offerData, discountValue: e.target.value })}
-                min="1"
+                onChange={e => setOfferData({ ...offerData, discountValue: e.target.value })}
+                min='1'
                 required
               />
             </label>
@@ -428,30 +470,37 @@ export default function ProductsManager() {
               <label className={styles.label}>
                 Inicio
                 <input
-                  type="date"
+                  type='date'
                   className={styles.input}
                   value={offerData.startDate}
-                  onChange={(e) => setOfferData({ ...offerData, startDate: e.target.value })}
+                  onChange={e => setOfferData({ ...offerData, startDate: e.target.value })}
                   required
                 />
               </label>
               <label className={styles.label}>
                 Fin
                 <input
-                  type="date"
+                  type='date'
                   className={styles.input}
                   value={offerData.endDate}
-                  onChange={(e) => setOfferData({ ...offerData, endDate: e.target.value })}
+                  onChange={e => setOfferData({ ...offerData, endDate: e.target.value })}
                   required
                 />
               </label>
             </div>
 
             <div className={styles.modalActions}>
-              <button type="button" className={styles.btnGhost} onClick={() => setOfferForm(null)}>
+              <button
+                type='button'
+                className={styles.btnGhost}
+                onClick={() => setOfferForm(null)}
+              >
                 Cancelar
               </button>
-              <button type="submit" className={styles.btnPrimary}>
+              <button
+                type='submit'
+                className={styles.btnPrimary}
+              >
                 Crear oferta
               </button>
             </div>

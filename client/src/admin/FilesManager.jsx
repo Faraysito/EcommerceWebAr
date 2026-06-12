@@ -35,7 +35,7 @@ export default function FilesManager() {
     load()
   }, [])
 
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = async e => {
     const file = e.target.files?.[0]
     if (!file) return
     setUploadingImg(true)
@@ -51,7 +51,7 @@ export default function FilesManager() {
     }
   }
 
-  const handleModelUpload = async (e) => {
+  const handleModelUpload = async e => {
     const file = e.target.files?.[0]
     if (!file) return
     setUploadingModel(true)
@@ -67,7 +67,7 @@ export default function FilesManager() {
     }
   }
 
-  const handleDeleteImage = async (img) => {
+  const handleDeleteImage = async img => {
     if (!confirm(`¿Eliminar la imagen "${img.name}"?`)) return
     setError('')
     try {
@@ -78,7 +78,7 @@ export default function FilesManager() {
     }
   }
 
-  const handleDeleteModel = async (model) => {
+  const handleDeleteModel = async model => {
     if (!confirm(`¿Eliminar el modelo "${model.name}"?`)) return
     setError('')
     try {
@@ -100,8 +100,8 @@ export default function FilesManager() {
           <label className={styles.uploadBtn}>
             {uploadingImg ? 'Subiendo…' : '+ Subir imagen'}
             <input
-              type="file"
-              accept="image/*"
+              type='file'
+              accept='image/*'
               onChange={handleImageUpload}
               disabled={uploadingImg}
               hidden
@@ -115,11 +115,26 @@ export default function FilesManager() {
           <p className={styles.muted}>No hay imágenes subidas.</p>
         ) : (
           <div className={styles.imageGrid}>
-            {images.map((img) => (
-              <div key={img.id} className={styles.imageCard}>
-                <img src={img.url} alt={img.name} className={styles.thumb} />
-                <span className={styles.fileName} title={img.name}>{img.name}</span>
-                <button className={styles.deleteBtn} onClick={() => handleDeleteImage(img)}>
+            {images.map(img => (
+              <div
+                key={img.id}
+                className={styles.imageCard}
+              >
+                <img
+                  src={img.url}
+                  alt={img.name}
+                  className={styles.thumb}
+                />
+                <span
+                  className={styles.fileName}
+                  title={img.name}
+                >
+                  {img.name}
+                </span>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => handleDeleteImage(img)}
+                >
                   Eliminar
                 </button>
               </div>
@@ -135,8 +150,8 @@ export default function FilesManager() {
           <label className={styles.uploadBtn}>
             {uploadingModel ? 'Subiendo…' : '+ Subir modelo (.glb)'}
             <input
-              type="file"
-              accept=".glb,model/gltf-binary"
+              type='file'
+              accept='.glb,model/gltf-binary'
               onChange={handleModelUpload}
               disabled={uploadingModel}
               hidden
@@ -150,11 +165,22 @@ export default function FilesManager() {
           <p className={styles.muted}>No hay modelos subidos.</p>
         ) : (
           <div className={styles.modelList}>
-            {models.map((model) => (
-              <div key={model.id} className={styles.modelItem}>
+            {models.map(model => (
+              <div
+                key={model.id}
+                className={styles.modelItem}
+              >
                 <span className={styles.modelIcon}>◆</span>
-                <span className={styles.fileName} title={model.name}>{model.name}</span>
-                <button className={styles.deleteBtn} onClick={() => handleDeleteModel(model)}>
+                <span
+                  className={styles.fileName}
+                  title={model.name}
+                >
+                  {model.name}
+                </span>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => handleDeleteModel(model)}
+                >
                   Eliminar
                 </button>
               </div>

@@ -37,10 +37,7 @@ const loginController = async (req, res) => {
 
   const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '1d' })
 
-  return res
-    .status(HTTP_STATUS.ok)
-    .cookie('auth-token', token, COOKIE_OPTIONS)
-    .json(payload)
+  return res.status(HTTP_STATUS.ok).cookie('auth-token', token, COOKIE_OPTIONS).json(payload)
 }
 
 export { loginController }

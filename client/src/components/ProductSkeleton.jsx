@@ -1,4 +1,4 @@
-import styles from "./ProductSkeleton.module.css";
+import styles from './ProductSkeleton.module.css'
 
 export function ProductSkeleton() {
   return (
@@ -10,7 +10,7 @@ export function ProductSkeleton() {
         <div className={styles.priceLine} />
       </div>
     </div>
-  );
+  )
 }
 
 export function ProductGridSkeleton({ count = 6 }) {
@@ -20,5 +20,5 @@ export function ProductGridSkeleton({ count = 6 }) {
         <ProductSkeleton key={i} />
       ))}
     </div>
-  );
+  )
 }
