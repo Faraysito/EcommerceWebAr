@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { HTTP_STATUS } from '../../utils/httpStatus.js'
-import { AppError } from '../../utils/AppError.js'
+import { HTTP_STATUS } from '../utils/httpStatus.js'
+import { AppError } from '../utils/AppError.js'
 import { env } from '../config/env.js'
 
 // Valida el JWT que viaja en la cookie httpOnly 'auth-token'. Si es valido,
