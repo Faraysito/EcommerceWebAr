@@ -1,4 +1,4 @@
-import { getUserByEmail } from '../../services/user.service.js'
+import { getUserByEmail, getRolePermissions } from '../../services/user.service.js'
 import { COOKIE_OPTIONS } from '../../utils/cookie-options.js'
 import { HTTP_STATUS } from '../../utils/httpStatus.js'
 import { AppError } from '../../utils/AppError.js'
@@ -12,6 +12,10 @@ const bodySchema = z.object({
   password: z.string().min(8)
 })
 
+// Nombre del rol que actua como superadmin (acceso total). Coincide con el
+// rol sembrado en database/test-values.sql.
+const SUPER_ADMIN_ROLE = 'admin'
+
 const loginController = async (req, res) => {
   const { email, password } = bodySchema.parse(req.body)
 
@@ -20,12 +24,20 @@ const loginController = async (req, res) => {
   const checkPassword = await bcrypt.compare(password, hashedPassword)
 
   if (!checkPassword) {
-    throw new AppError(HTTP_STATUS.badRequest, 'Email or password is invalid')
+    throw new AppError(HTTP_STATUS.badRequest, 'Email o contraseña inválidos')
   }
 
-  const token = jwt.sign(restUser, env.JWT_SECRET, { expiresIn: '1d' })
+  const isSuperAdmin = restUser.role?.name === SUPER_ADMIN_ROLE
 
-  return res.status(HTTP_STATUS.ok).cookie('auth-token', token, COOKIE_OPTIONS).json(restUser)
+  // Superadmin no necesita lista de permisos (bypasea todo). El resto lleva
+  // sus permisos firmados en el token para no consultar la BD en cada request.
+  const permissions = isSuperAdmin ? [] : await getRolePermissions({ roleId: restUser.role.id })
+
+  const payload = { ...restUser, isSuperAdmin, permissions }
+
+  const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '1d' })
+
+  return res.status(HTTP_STATUS.ok).cookie('auth-token', token, COOKIE_OPTIONS).json(payload)
 }
 
 export { loginController }

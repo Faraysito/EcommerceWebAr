@@ -1,0 +1,181 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+}
+
+.main {
+  flex: 1;
+  padding: 28px 16px 48px;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.head {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  color: #777;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.muted {
+  color: #999;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.error {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1px solid #f5c6c6;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 16px;
+  color: #888;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, #ff6a00, #ff4747);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 11px 26px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.primaryBtn:hover {
+  filter: brightness(1.05);
+}
+
+.orderList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.orderCard {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+
+.orderHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.orderId {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.orderDate {
+  display: block;
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+.status {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.statusPending {
+  background: #fff4e5;
+  color: #d98300;
+}
+
+.statusProgress {
+  background: #e8f0ff;
+  color: #2a6fd6;
+}
+
+.statusDone {
+  background: #e7f7ed;
+  color: #1a8a44;
+}
+
+.lines {
+  list-style: none;
+  margin: 0;
+  padding: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.88rem;
+}
+
+.lineName {
+  color: #444;
+}
+
+.lineSub {
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.orderFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid #f2f2f2;
+  font-size: 0.92rem;
+  color: #555;
+}
+
+.orderTotal {
+  font-size: 1.2rem;
+  color: #ff4747;
+}

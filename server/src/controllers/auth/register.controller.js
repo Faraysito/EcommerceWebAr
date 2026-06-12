@@ -14,9 +14,11 @@ const registerController = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  createUser({ email, password: hashedPassword, roleId })
+  // Bug original: no se await-eaba createUser, asi que el error de duplicado u
+  // otro nunca llegaba al cliente. Ahora si.
+  await createUser({ email, password: hashedPassword, roleId })
 
-  return res.status(HTTP_STATUS.created).json({ message: 'User created successfully' })
+  return res.status(HTTP_STATUS.created).json({ message: 'Usuario creado correctamente' })
 }
 
 export { registerController }

@@ -1,0 +1,38 @@
+.modelViewer {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #fafafa 0%, #eef0f2 100%);
+}
+
+.loaderWrapper {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.loaderTrack {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.loaderBar {
+  height: 100%;
+  background: #ff4747;
+  border-radius: 99px;
+  transition: width 0.2s ease;
+}
+
+.loaderLabel {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 600;
+}
