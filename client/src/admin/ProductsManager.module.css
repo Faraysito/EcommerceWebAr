@@ -81,6 +81,13 @@
   flex-shrink: 0;
 }
 
+.productThumbEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c4c4c4;
+}
+
 .productInfo {
   flex: 1;
   display: flex;

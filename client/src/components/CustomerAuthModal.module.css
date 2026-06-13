@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 14px;
   min-width: 300px;
+  padding: 18px;
 }
 
 .field {

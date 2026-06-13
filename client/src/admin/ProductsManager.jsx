@@ -209,11 +209,44 @@ export default function ProductsManager() {
                 key={product.id}
                 className={styles.productCard}
               >
-                <img
-                  src={product.image || ''}
-                  alt={product.name}
-                  className={styles.productThumb}
-                />
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className={styles.productThumb}
+                  />
+                ) : (
+                  <div
+                    className={`${styles.productThumb} ${styles.productThumbEmpty}`}
+                    aria-label='Sin imagen'
+                  >
+                    <svg
+                      width='26'
+                      height='26'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    >
+                      <rect
+                        x='3'
+                        y='3'
+                        width='18'
+                        height='18'
+                        rx='2'
+                        ry='2'
+                      />
+                      <circle
+                        cx='8.5'
+                        cy='8.5'
+                        r='1.5'
+                      />
+                      <path d='M21 15l-5-5L5 21' />
+                    </svg>
+                  </div>
+                )}
                 <div className={styles.productInfo}>
                   <strong className={styles.productName}>{product.name}</strong>
                   <span className={styles.productMeta}>
