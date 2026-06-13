@@ -1,4 +1,4 @@
-""" Algoritmo que entrega una lista de los n productos más similares al producto seleccionado
+""" Algoritmo de machine learning sencillo que entrega los n productos más similares al producto seleccionado
 """
 
 import pandas as pd
@@ -11,7 +11,7 @@ engine = create_engine("postgresql://postgres:NorthumbriaBernard1998.@db.vjseeip
 """ 
 Recibe parámetros de producto y cantidad de elementos a devolver
 """
-def cincoProductosSimilares(producto, k):
+def recursos_similares(producto, k):
     # data frame
     dc_listing = pd.read_sql("SELECT id, name, category_id, price FROM product", engine)
 
@@ -39,3 +39,5 @@ def cincoProductosSimilares(producto, k):
 def similitud_precio(p1, p2):
     diferencia = abs(p1 - p2)
     return 1 / (1 + (diferencia / 100)**2)
+
+print(recursos_similares(producto, 8))
