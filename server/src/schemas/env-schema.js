@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { Environment, IntegrationCommerceCodes, IntegrationApiKeys } from 'transbank-sdk'
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -19,7 +20,15 @@ const envSchema = z.object({
         throw new Error('ALLOWED_ORIGINS must be a valid JSON array of strings')
       }
     })
-    .default('*')
+    .default('*'),
+  TRANSBANK_COMMERCE_CODE: z.string().min(1).default(IntegrationCommerceCodes.WEBPAY_PLUS),
+  TRANSBANK_API_KEY: z.string().min(1).default(IntegrationApiKeys.WEBPAY),
+  TRANSBANK_ENVIRONMENT: z.string().default(Environment.Integration),
+  TRANSBANK_RETURN_URL: z
+    .url()
+    .min(1)
+    .default('http://localhost:3000/api/customer/checkout/commit'),
+  REDIRECT_AFTER_CHECKOUT_TBK: z.url().min(1).default('http://localhost:5173/pedidos')
 })
 
 export { envSchema }
