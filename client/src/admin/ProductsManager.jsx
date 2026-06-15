@@ -59,7 +59,26 @@ export default function ProductsManager() {
   }
 
   useEffect(() => {
-    load()
+    ;(async () => {
+      try {
+        const [prods, cats, imgs, mdls, offs] = await Promise.all([
+          getProducts(),
+          getCategories(),
+          getImages(),
+          getModels(),
+          getOffers()
+        ])
+        setProducts(prods)
+        setCategories(cats)
+        setImages(imgs)
+        setModels(mdls)
+        setOffers(offs)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
   const openCreate = () => {

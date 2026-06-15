@@ -32,7 +32,17 @@ export default function FilesManager() {
   }
 
   useEffect(() => {
-    load()
+    ;(async () => {
+      try {
+        const [imgs, mdls] = await Promise.all([getImages(), getModels()])
+        setImages(imgs)
+        setModels(mdls)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
   const handleImageUpload = async e => {

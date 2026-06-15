@@ -34,7 +34,18 @@ export default function UsersManager() {
   }
 
   useEffect(() => {
-    load()
+    ;(async () => {
+      try {
+        const [u, r] = await Promise.all([getUsers(), getRoles()])
+        setUsers(u)
+        setRoles(r)
+        setRoleId(prev => prev || r[0]?.id || '')
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
   const handleCreate = async e => {

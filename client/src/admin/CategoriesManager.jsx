@@ -34,7 +34,16 @@ export default function CategoriesManager() {
   }
 
   useEffect(() => {
-    load()
+    ;(async () => {
+      try {
+        const data = await getCategories()
+        setCategories(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
   const handleCreate = async e => {
