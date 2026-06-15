@@ -6,7 +6,11 @@ import {
   customerLogoutController,
   customerVerifyController
 } from '../controllers/customer/customer-auth.controller.js'
-import { checkoutController, myOrdersController } from '../controllers/sales/sale.controller.js'
+import {
+  checkoutCommitController,
+  checkoutController,
+  myOrdersController
+} from '../controllers/sales/sale.controller.js'
 
 // Rutas del CLIENTE de la tienda (quien compra). Sesión propia con la cookie
 // 'customer-token', separada del panel admin.
@@ -20,6 +24,7 @@ customerRouter.get('/auth/verify', customerAuth, customerVerifyController)
 
 // --- Compras (requieren sesión de cliente) ---
 customerRouter.post('/checkout', customerAuth, checkoutController)
+customerRouter.get('/checkout/commit/:saleId', customerAuth, checkoutCommitController)
 customerRouter.get('/orders', customerAuth, myOrdersController)
 
 export { customerRouter }

@@ -41,7 +41,7 @@ function unitPriceWithOffer(product) {
 
 // Crea una venta a partir de un carrito [{ productId, quantity }].
 // customer viene del JWT (req.customer): { id, email, name }.
-const createSale = async ({ customerId, items }) => {
+const createSale = async ({ customerId, items, paymentMethod }) => {
   if (!Array.isArray(items) || items.length === 0) {
     throw new AppError(HTTP_STATUS.badRequest, 'El carrito está vacío')
   }
@@ -95,8 +95,15 @@ const createSale = async ({ customerId, items }) => {
   // 4. Crea la venta (cabecera).
   const { data: sale, error: saleError } = await supabase
     .from('sale')
-    .insert({ customer_id: customerId, total, status: 'Pendiente' })
-    .select('id, status, total, created_at')
+    .insert({
+      customer_id: customerId,
+      total,
+      status: 'Pendiente',
+      payment_method: paymentMethod
+    })
+    .select(
+      'id, status, total, buy_order, authorization_code, transaction_token, card_number, payment_method, payment_status, created_at'
+    )
     .single()
 
   if (saleError || !sale) {
@@ -151,6 +158,12 @@ const createSale = async ({ customerId, items }) => {
     id: sale.id,
     status: sale.status,
     total: sale.total,
+    transactionToken: sale.transaction_token,
+    buyOrder: sale.buy_order,
+    authorizationCode: sale.authorization_code,
+    cardNumber: sale.card_number,
+    paymentMethod: sale.payment_method,
+    paymentStatus: sale.payment_status,
     createdAt: sale.created_at,
     items: lines.map(l => ({
       productId: l.product.id,
@@ -202,4 +215,74 @@ const listSalesByCustomer = async ({ customerId }) => {
   }))
 }
 
-export { createSale, listSalesByCustomer }
+const updateSale = async ({
+  id,
+  status,
+  customerId,
+  total,
+  transactionToken,
+  buyOrder,
+  authorizationCode,
+  cardNumber,
+  paymentMethod,
+  paymentStatus
+}) => {
+  const payload = {
+    status,
+    customer_id: customerId,
+    total,
+    transaction_token: transactionToken,
+    buy_order: buyOrder,
+    authorization_code: authorizationCode,
+    card_number: cardNumber,
+    payment_method: paymentMethod,
+    payment_status: paymentStatus
+  }
+
+  const validPayload = Object.entries(payload).reduce((acc, [key, value]) => {
+    if (value) {
+      acc[key] = value
+    }
+
+    return acc
+  }, {})
+
+  const { data, success } = await supabase
+    .from('sale')
+    .update(validPayload)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (!success) {
+    throw new AppError(HTTP_STATUS.internalServerError, 'No se ha podido actualizar la venta')
+  }
+
+  return data
+}
+
+const getSaleById = async ({ id }) => {
+  const { data, success } = await supabase
+    .from('sale')
+    .select(
+      `
+      *,
+      sale_product (
+        quantity,
+        unit_price,
+        sub_total,
+        product ( id, name, stock )
+      )
+    `
+    )
+    .eq('id', id)
+    .single()
+
+  if (!success) {
+    throw new AppError(HTTP_STATUS.notFound, 'No se ha podido encontrar la venta')
+  }
+
+  return data
+}
+
+export { createSale, listSalesByCustomer, updateSale, getSaleById }
