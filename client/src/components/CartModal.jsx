@@ -19,12 +19,30 @@ export default function CartModal() {
 
   const linePrice = item => (item.discountActive ? item.discountedPrice : item.price)
 
+  const redirectToPayment = ({ url, token }) => {
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = url
+
+    const input = document.createElement('input')
+    input.type = 'hidden'
+    input.name = 'token_ws'
+    input.value = token
+
+    form.appendChild(input)
+    document.body.appendChild(form)
+    form.submit()
+  }
+
   const doCheckout = async () => {
     setPlacing(true)
     setError('')
     try {
       const payload = items.map(p => ({ productId: p.id, quantity: p.quantity }))
       const sale = await checkoutRequest(payload)
+
+      redirectToPayment(sale)
+
       setConfirmation(sale)
       clearCart()
     } catch (err) {
