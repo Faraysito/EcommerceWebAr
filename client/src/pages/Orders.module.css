@@ -123,6 +123,11 @@
   white-space: nowrap;
 }
 
+.statusCancel {
+  background: #ffcaca;
+  color: #d50f0fdd;
+}
+
 .statusPending {
   background: #fff4e5;
   color: #d98300;

@@ -9,6 +9,7 @@ import styles from './Orders.module.css'
 
 // Colores del badge según estado de la venta.
 const STATUS_CLASS = {
+  Cancelado: 'statusCancel',
   Pendiente: 'statusPending',
   'En progreso': 'statusProgress',
   Completado: 'statusDone'
