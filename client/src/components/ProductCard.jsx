@@ -22,12 +22,45 @@ function ProductCard({ product }) {
         <div className={styles.thumbWrap}>
           {hasDiscount && <span className={styles.discountBadge}>-{product.discountPercent}%</span>}
           {outOfStock && <span className={styles.soldOut}>Agotado</span>}
-          <img
-            className={styles.thumb}
-            src={product.image}
-            alt={product.name}
-            loading='lazy'
-          />
+          {product.image ? (
+            <img
+              className={styles.thumb}
+              src={product.image}
+              alt={product.name}
+              loading='lazy'
+            />
+          ) : (
+            <div
+              className={styles.thumbPlaceholder}
+              aria-label='Sin imagen'
+            >
+              <svg
+                width='40'
+                height='40'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='1.5'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+              >
+                <rect
+                  x='3'
+                  y='3'
+                  width='18'
+                  height='18'
+                  rx='2'
+                  ry='2'
+                />
+                <circle
+                  cx='8.5'
+                  cy='8.5'
+                  r='1.5'
+                />
+                <path d='M21 15l-5-5L5 21' />
+              </svg>
+            </div>
+          )}
         </div>
 
         <div className={styles.content}>

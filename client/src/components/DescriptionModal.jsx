@@ -14,11 +14,44 @@ export const DescriptionModal = ({ isOpen, close, product }) => {
       fitContent
     >
       <div className={styles.wrapper}>
-        <img
-          className={styles.thumb}
-          src={product.image}
-          alt={product.name}
-        />
+        {product.image ? (
+          <img
+            className={styles.thumb}
+            src={product.image}
+            alt={product.name}
+          />
+        ) : (
+          <div
+            className={styles.thumbEmpty}
+            aria-label='Sin imagen'
+          >
+            <svg
+              width='48'
+              height='48'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='1.5'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            >
+              <rect
+                x='3'
+                y='3'
+                width='18'
+                height='18'
+                rx='2'
+                ry='2'
+              />
+              <circle
+                cx='8.5'
+                cy='8.5'
+                r='1.5'
+              />
+              <path d='M21 15l-5-5L5 21' />
+            </svg>
+          </div>
+        )}
 
         <p className={styles.description}>{product.description}</p>
 
