@@ -1,6 +1,6 @@
 import { envSchema } from '../schemas/env-schema.js'
 
-process.loadEnvFile()
+import 'dotenv/config'
 
 const env = envSchema.parse(process.env)
 
