@@ -1,7 +1,11 @@
 import { z } from 'zod'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { createCustomer, getCustomerByEmail } from '../../services/customer.service.js'
+import {
+  createCustomer,
+  getCustomerByEmail,
+  getCustomerById
+} from '../../services/customer.service.js'
 import {
   CUSTOMER_COOKIE_NAME,
   CUSTOMER_COOKIE_OPTIONS
@@ -10,12 +14,19 @@ import { HTTP_STATUS } from '../../utils/httpStatus.js'
 import { AppError } from '../../utils/AppError.js'
 import { env } from '../../config/env.js'
 
-// El payload que firmamos en el JWT del cliente. Sin datos sensibles.
+// Payload del JWT del cliente. Incluye is_seller para que el frontend muestre
+// el panel de vendedor sin consultar la BD en cada navegación. No lleva datos
+// sensibles (ni password ni datos de pago).
 const buildPayload = customer => ({
   id: customer.id,
   email: customer.email,
-  name: customer.name ?? null
+  name: customer.name ?? null,
+  isSeller: Boolean(customer.is_seller),
+  storeName: customer.store_name ?? null,
+  storeSlug: customer.store_slug ?? null
 })
+
+const sign = payload => jwt.sign(payload, env.JWT_SECRET, { expiresIn: '7d' })
 
 // --- Registro ---
 const registerSchema = z.object({
@@ -30,11 +41,10 @@ const customerRegisterController = async (req, res) => {
 
   const customer = await createCustomer({ email, password: hashedPassword, name })
   const payload = buildPayload(customer)
-  const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '7d' })
 
   return res
     .status(HTTP_STATUS.created)
-    .cookie(CUSTOMER_COOKIE_NAME, token, CUSTOMER_COOKIE_OPTIONS)
+    .cookie(CUSTOMER_COOKIE_NAME, sign(payload), CUSTOMER_COOKIE_OPTIONS)
     .json(payload)
 }
 
@@ -55,11 +65,10 @@ const customerLoginController = async (req, res) => {
   }
 
   const payload = buildPayload(rest)
-  const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '7d' })
 
   return res
     .status(HTTP_STATUS.ok)
-    .cookie(CUSTOMER_COOKIE_NAME, token, CUSTOMER_COOKIE_OPTIONS)
+    .cookie(CUSTOMER_COOKIE_NAME, sign(payload), CUSTOMER_COOKIE_OPTIONS)
     .json(payload)
 }
 
@@ -72,13 +81,16 @@ const customerLogoutController = (req, res) => {
 }
 
 // --- Verify (sesión activa) ---
-const customerVerifyController = (req, res) => {
-  return res.status(HTTP_STATUS.ok).json({
-    valid: true,
-    id: req.customer.id,
-    email: req.customer.email,
-    name: req.customer.name ?? null
-  })
+// Relee el cliente de la BD para reflejar cambios recientes (ej. acaba de
+// abrir su tienda) y reemite la cookie con el payload fresco.
+const customerVerifyController = async (req, res) => {
+  const fresh = await getCustomerById({ id: req.customer.id })
+  const payload = buildPayload(fresh)
+
+  return res
+    .status(HTTP_STATUS.ok)
+    .cookie(CUSTOMER_COOKIE_NAME, sign(payload), CUSTOMER_COOKIE_OPTIONS)
+    .json({ valid: true, ...payload })
 }
 
 export {

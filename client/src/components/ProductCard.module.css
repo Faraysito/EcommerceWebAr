@@ -110,6 +110,21 @@
   height: 2.43em;
 }
 
+.seller {
+  font-size: 0.78rem;
+  color: #ff5b1a;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.seller:hover {
+  text-decoration: underline;
+}
+
 .priceRow {
   display: flex;
   align-items: baseline;

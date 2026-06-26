@@ -1,33 +1,35 @@
 import { supabase } from '../config/supabase.js'
 import { AppError } from '../utils/AppError.js'
 import { HTTP_STATUS } from '../utils/httpStatus.js'
+import { env } from '../config/env.js'
 
-// Select con todas las relaciones que el frontend necesita por producto:
-// categoria, modelo 3D, imagenes (via product_image) y ofertas vigentes.
+// Productos del MARKETPLACE: cada producto pertenece a un vendedor (seller_id).
+// El listado público trae el nombre de la tienda para mostrar "Vendido por X",
+// igual que en Temu/AliExpress.
+
 const PRODUCT_SELECT = `
   id,
   name,
   description,
   price,
   stock,
+  seller_id,
   created_at,
   category ( id, name ),
   model ( id, name, file_key ),
   product_image ( image ( id, name, file_key ) ),
-  offer ( id, discount_type, discount_value, start_date, end_date )
+  offer ( id, discount_type, discount_value, start_date, end_date ),
+  seller:seller_id ( id, store_name, store_slug )
 `
 
-// Construye la URL publica de un file_key del bucket de Storage.
-import { env } from '../config/env.js'
 function publicUrl(fileKey) {
   if (!fileKey) return null
   const { data } = supabase.storage.from(env.SUPABASE_BUCKET).getPublicUrl(fileKey)
   return data?.publicUrl ?? null
 }
 
-// Calcula el precio con descuento si hay una oferta vigente ahora. Igual que
-// MenuWebAR: el backend hace el calculo, el front solo lee discountActive y
-// discountedPrice (asi nadie hace trampa con el reloj del navegador).
+// Precio con descuento si hay oferta vigente. El backend lo calcula (nadie
+// hace trampa con el reloj del navegador).
 function applyOffer(product) {
   const now = Date.now()
   const activeOffer = (product.offer ?? []).find(o => {
@@ -46,7 +48,6 @@ function applyOffer(product) {
       discountPercent = activeOffer.discount_value
       discountedPrice = Math.round(product.price * (1 - activeOffer.discount_value / 100))
     } else {
-      // FIXED: descuento de monto fijo
       discountedPrice = Math.max(0, product.price - activeOffer.discount_value)
       discountPercent = Math.round((activeOffer.discount_value / product.price) * 100)
     }
@@ -55,7 +56,6 @@ function applyOffer(product) {
   return { discountActive, discountedPrice, discountPercent }
 }
 
-// Normaliza la fila cruda de Supabase a la forma que consume el frontend.
 function shapeProduct(row) {
   const images = (row.product_image ?? [])
     .map(pi => pi.image)
@@ -72,20 +72,27 @@ function shapeProduct(row) {
     stock: row.stock,
     categoryId: row.category?.id ?? null,
     categoryName: row.category?.name ?? null,
-    image: images[0]?.url ?? null, // imagen principal
-    images, // todas
-    model: publicUrl(row.model?.file_key), // .glb para AR (o null)
+    image: images[0]?.url ?? null,
+    images,
+    model: publicUrl(row.model?.file_key),
     discountActive,
     discountedPrice,
-    discountPercent
+    discountPercent,
+    // Datos de la tienda vendedora (para "Vendido por X")
+    sellerId: row.seller_id ?? null,
+    storeName: row.seller?.store_name ?? null,
+    storeSlug: row.seller?.store_slug ?? null
   }
 }
 
-const listProducts = async () => {
-  const { data, error } = await supabase
-    .from('product')
-    .select(PRODUCT_SELECT)
-    .order('created_at', { ascending: false })
+// --- Catálogo público (todos los vendedores) ---
+const listProducts = async ({ sellerId, search } = {}) => {
+  let query = supabase.from('product').select(PRODUCT_SELECT)
+
+  if (sellerId) query = query.eq('seller_id', sellerId)
+  if (search) query = query.ilike('name', `%${search}%`)
+
+  const { data, error } = await query.order('created_at', { ascending: false })
 
   if (error) {
     throw new AppError(HTTP_STATUS.internalServerError, 'No se pudieron listar los productos')
@@ -108,8 +115,31 @@ const getProductById = async ({ id }) => {
   return shapeProduct(data)
 }
 
-// Crea un producto y, si vienen imageIds, las vincula en product_image.
+// --- Productos de UN vendedor (su propio panel) ---
+// Incluye los productos aunque estén agotados; es la vista de gestión.
+const listProductsBySeller = async ({ sellerId }) => {
+  return listProducts({ sellerId })
+}
+
+// Helper: confirma que el producto existe y pertenece al vendedor. Lanza si no.
+async function assertOwnership(productId, sellerId) {
+  const { data, error } = await supabase
+    .from('product')
+    .select('id, seller_id')
+    .eq('id', productId)
+    .single()
+
+  if (error || !data) {
+    throw new AppError(HTTP_STATUS.notFound, 'Producto no encontrado')
+  }
+  if (data.seller_id !== sellerId) {
+    throw new AppError(HTTP_STATUS.unauthorized, 'Este producto no es de tu tienda')
+  }
+}
+
+// Crea un producto a nombre del vendedor que lo publica.
 const createProduct = async ({
+  sellerId,
   name,
   description,
   price,
@@ -126,7 +156,8 @@ const createProduct = async ({
       price,
       stock,
       category_id: categoryId,
-      model_id: modelId ?? null
+      model_id: modelId ?? null,
+      seller_id: sellerId
     })
     .select('id')
     .single()
@@ -140,8 +171,11 @@ const createProduct = async ({
   return getProductById({ id: data.id })
 }
 
+// Actualiza un producto. requireOwner = vendedor (debe ser dueño).
+// Si requireOwner es null/undefined, es un admin y puede editar cualquiera.
 const updateProduct = async ({
   id,
+  requireOwner,
   name,
   description,
   price,
@@ -150,23 +184,25 @@ const updateProduct = async ({
   modelId,
   imageIds
 }) => {
-  const { error } = await supabase
-    .from('product')
-    .update({
-      name,
-      description,
-      price,
-      stock,
-      category_id: categoryId,
-      model_id: modelId ?? null
-    })
-    .eq('id', id)
+  if (requireOwner) await assertOwnership(id, requireOwner)
 
-  if (error) {
-    throw new AppError(HTTP_STATUS.internalServerError, 'No se pudo actualizar el producto')
+  // Construye el update solo con los campos provistos (permite updates
+  // parciales como el ajuste de stock tras una compra).
+  const patch = {}
+  if (name !== undefined) patch.name = name
+  if (description !== undefined) patch.description = description
+  if (price !== undefined) patch.price = price
+  if (stock !== undefined) patch.stock = stock
+  if (categoryId !== undefined) patch.category_id = categoryId
+  if (modelId !== undefined) patch.model_id = modelId ?? null
+
+  if (Object.keys(patch).length > 0) {
+    const { error } = await supabase.from('product').update(patch).eq('id', id)
+    if (error) {
+      throw new AppError(HTTP_STATUS.internalServerError, 'No se pudo actualizar el producto')
+    }
   }
 
-  // Si mandan imageIds, resetea los vinculos (borra y revincula).
   if (Array.isArray(imageIds)) {
     await supabase.from('product_image').delete().eq('product_id', id)
     await linkImages(id, imageIds)
@@ -175,8 +211,9 @@ const updateProduct = async ({
   return getProductById({ id })
 }
 
-const deleteProduct = async ({ id }) => {
-  // Limpia vinculos antes de borrar el producto.
+const deleteProduct = async ({ id, requireOwner }) => {
+  if (requireOwner) await assertOwnership(id, requireOwner)
+
   await supabase.from('product_image').delete().eq('product_id', id)
   const { error } = await supabase.from('product').delete().eq('id', id)
 
@@ -185,7 +222,6 @@ const deleteProduct = async ({ id }) => {
   }
 }
 
-// Helper: vincula imagenes a un producto en la tabla product_image.
 async function linkImages(productId, imageIds) {
   if (!Array.isArray(imageIds) || imageIds.length === 0) return
   const rows = imageIds.map(imageId => ({ product_id: productId, image_id: imageId }))
@@ -195,4 +231,11 @@ async function linkImages(productId, imageIds) {
   }
 }
 
-export { listProducts, getProductById, createProduct, updateProduct, deleteProduct }
+export {
+  listProducts,
+  getProductById,
+  listProductsBySeller,
+  createProduct,
+  updateProduct,
+  deleteProduct
+}

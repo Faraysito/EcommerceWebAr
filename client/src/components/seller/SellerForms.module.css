@@ -1,0 +1,501 @@
+/* Estilos compartidos por los componentes del panel de vendedor:
+   formularios, tablas, tarjetas, badges. Mantiene el lenguaje visual del
+   marketplace (cards blancas, acento naranja-rojo). */
+
+/* ---------- CTA "abre tu tienda" ---------- */
+.ctaWrap {
+  display: grid;
+  place-items: center;
+  padding: 24px 0 48px;
+}
+
+.ctaCard {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 20px;
+  padding: 36px 34px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+}
+
+.badge {
+  display: inline-block;
+  background: #fff0e9;
+  color: #ff5b1a;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 99px;
+}
+
+.ctaTitle {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #1d1d1f;
+  margin: 16px 0 8px;
+  line-height: 1.2;
+}
+
+.ctaText {
+  color: #666;
+  font-size: 0.96rem;
+  margin: 0 0 18px;
+}
+
+.perks {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perks li {
+  position: relative;
+  padding-left: 26px;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.perks li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ff6a00, #ff4747);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- Formularios ---------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 11px 13px;
+  font-size: 0.92rem;
+  color: #222;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: #ff6a00;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: #999;
+}
+
+/* ---------- Botones ---------- */
+.primaryBtn {
+  background: linear-gradient(135deg, #ff6a00, #ff4747);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 12px 26px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+  align-self: flex-start;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ghostBtn {
+  background: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 99px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ghostBtn:hover {
+  background: #f7f7f7;
+}
+
+.dangerBtn {
+  background: none;
+  color: #d33;
+  border: 1px solid #f0c9c9;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dangerBtn:hover {
+  background: #fdf0f0;
+}
+
+.linkBtn {
+  background: none;
+  border: none;
+  color: #ff5b1a;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.linkBtn:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Mensajes ---------- */
+.error {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1px solid #f5c6c6;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.87rem;
+}
+
+.success {
+  background: #e7f7ed;
+  color: #1a8a44;
+  border: 1px solid #c5ebd3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.87rem;
+}
+
+.muted {
+  color: #999;
+  font-size: 0.92rem;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ---------- Toolbar (encabezado de sección con acción) ---------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0;
+}
+
+/* ---------- Tarjetas de producto (grid del vendedor) ---------- */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.prodCard {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.prodThumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #f3f3f3;
+}
+
+.prodThumbEmpty {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f3f3f3;
+  display: grid;
+  place-items: center;
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+.prodBody {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.prodName {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.prodMeta {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+.prodPrice {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ff4747;
+}
+
+.prodActions {
+  display: flex;
+  gap: 8px;
+  padding: 0 14px 14px;
+}
+
+/* ---------- Tabla de ventas / payouts ---------- */
+.tableWrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 14px;
+  background: #fafafa;
+  color: #777;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f3f3f3;
+  color: #333;
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---------- Badges de estado ---------- */
+.statusBadge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.stPendiente {
+  background: #fff4e5;
+  color: #d98300;
+}
+
+.stPreparando {
+  background: #e8f0ff;
+  color: #2a6fd6;
+}
+
+.stEnviado {
+  background: #ede9ff;
+  color: #6a3fd6;
+}
+
+.stEntregado,
+.stPagado {
+  background: #e7f7ed;
+  color: #1a8a44;
+}
+
+.stCancelado,
+.stRetenido {
+  background: #ffcaca;
+  color: #d50f0f;
+}
+
+/* ---------- Tarjetas de métricas (ganancias) ---------- */
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.metricCard {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.metricCardAccent {
+  background: linear-gradient(135deg, #fff6f2, #fff0ec);
+  border-color: #ffd9c9;
+}
+
+.metricLabel {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0 0 6px;
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1d1d1f;
+}
+
+.metricValueAccent {
+  color: #ff4747;
+}
+
+/* ---------- Estado vacío ---------- */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 48px 16px;
+  color: #888;
+  background: #fff;
+  border: 1px dashed #ddd;
+  border-radius: 16px;
+  text-align: center;
+}
+
+/* ---------- Selector de estado en tabla ---------- */
+.inlineSelect {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.82rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.inlineSelect:focus {
+  outline: none;
+  border-color: #ff6a00;
+}
+
+/* ---------- Subida de archivos / thumbs ---------- */
+.uploadRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.thumbStrip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.thumbItem {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e3e3e3;
+}
+
+.thumbItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbRemove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 560px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}

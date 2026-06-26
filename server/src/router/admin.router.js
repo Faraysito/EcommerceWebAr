@@ -32,6 +32,13 @@ import {
   createOfferController,
   deleteOfferController
 } from '../controllers/offers/offer.controller.js'
+import {
+  getSettingsController,
+  updateSettingsController,
+  listSellersController,
+  listPayoutsController,
+  updatePayoutController
+} from '../controllers/marketplace/marketplace.controller.js'
 
 // Todas las rutas de este router pasan primero por auth (cookie JWT valida).
 const adminRouter = Router()
@@ -81,5 +88,24 @@ adminRouter.get('/users', requirePermission('user.read'), getUsersController)
 adminRouter.get('/roles', requirePermission('user.read'), getRolesController)
 adminRouter.post('/users', requirePermission('user.create'), createUserController)
 adminRouter.delete('/users/:id', requirePermission('user.delete'), deleteUserController)
+
+// --- Marketplace: configuración (comisión) ---
+adminRouter.get('/marketplace/settings', requirePermission('marketplace.read'), getSettingsController)
+adminRouter.put(
+  '/marketplace/settings',
+  requirePermission('marketplace.update'),
+  updateSettingsController
+)
+
+// --- Marketplace: vendedores ---
+adminRouter.get('/marketplace/sellers', requirePermission('seller.read'), listSellersController)
+
+// --- Marketplace: payouts (liquidaciones a vendedores) ---
+adminRouter.get('/marketplace/payouts', requirePermission('payout.read'), listPayoutsController)
+adminRouter.put(
+  '/marketplace/payouts/:id',
+  requirePermission('payout.update'),
+  updatePayoutController
+)
 
 export { adminRouter }

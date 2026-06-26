@@ -3,7 +3,8 @@ import {
   createSale,
   getSaleById,
   listSalesByCustomer,
-  updateSale
+  updateSale,
+  generatePayoutsForSale
 } from '../../services/sale.service.js'
 import { HTTP_STATUS } from '../../utils/httpStatus.js'
 import {
@@ -16,8 +17,9 @@ import { randomBytes } from 'node:crypto'
 import { env } from '../../config/env.js'
 import { updateProduct } from '../../services/product.service.js'
 
-// Checkout: recibe el carrito y crea la venta. El cliente sale del JWT
-// (req.customer), no del body, para que nadie compre a nombre de otro.
+// Checkout: recibe el carrito y crea la orden. El comprador sale del JWT
+// (req.customer.id), no del body. La orden puede tener productos de varios
+// vendedores; el split por vendedor lo hace sale.service.
 const checkoutSchema = z.object({
   items: z
     .array(
@@ -33,7 +35,7 @@ const checkoutController = async (req, res) => {
   const { items } = checkoutSchema.parse(req.body)
 
   const sale = await createSale({
-    customerId: req.customer.id,
+    buyerId: req.customer.id,
     items,
     paymentMethod: 'Webpay Plus'
   })
@@ -74,10 +76,9 @@ const checkoutCommitController = async (req, res) => {
   }))
 
   if (TBK_TOKEN) {
-    // Compra anulada por el usuario
+    // Compra anulada por el usuario: devuelve stock y marca cancelada.
     const data = await statusTransaction({ token: TBK_TOKEN })
 
-    // Devuelve el stock antes de la compra
     prodToModify.forEach(async ({ id, quantity, productStock }) => {
       await updateProduct({ id, stock: productStock + quantity })
     })
@@ -108,22 +109,24 @@ const checkoutCommitController = async (req, res) => {
     paymentStatus: transaction.status
   }
 
-  // Devuelve el stock antes de la compra si esta es distinta de 'AUTHORIZED'
   if (transaction.status !== 'AUTHORIZED') {
+    // Pago no aprobado: devuelve stock.
     prodToModify.forEach(async ({ id, quantity, productStock }) => {
       await updateProduct({ id, stock: productStock + quantity })
     })
   }
 
-  await updateSale({
-    id: saleId,
-    ...payload
-  })
+  await updateSale({ id: saleId, ...payload })
+
+  // Pago aprobado: genera los payouts por vendedor de esta orden.
+  if (transaction.status === 'AUTHORIZED') {
+    await generatePayoutsForSale({ saleId })
+  }
 
   return res.status(HTTP_STATUS.ok).redirect(env.REDIRECT_AFTER_CHECKOUT_TBK)
 }
 
-// Historial de pedidos del cliente logueado.
+// Historial de pedidos del COMPRADOR logueado.
 const myOrdersController = async (req, res) => {
   const orders = await listSalesByCustomer({ customerId: req.customer.id })
   return res.status(HTTP_STATUS.ok).json(orders)

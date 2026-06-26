@@ -78,6 +78,11 @@
   color: #ff4747;
 }
 
+.sellLink {
+  color: #ff5b1a !important;
+  font-weight: 700 !important;
+}
+
 .actions {
   display: flex;
   align-items: center;

@@ -79,7 +79,13 @@ function Header({ search = '', onSearch }) {
 
         <nav className={styles.nav}>
           <a href='/#catalogo'>Catálogo</a>
-          <a href='/#footer'>Nosotros</a>
+          <a href='/tiendas'>Tiendas</a>
+          <a
+            href='/vender'
+            className={styles.sellLink}
+          >
+            Vender
+          </a>
         </nav>
 
         <div className={styles.actions}>
@@ -146,6 +152,15 @@ function Header({ search = '', onSearch }) {
               {menuOpen && (
                 <div className={styles.menu}>
                   <div className={styles.menuHeader}>{customer?.name || customer?.email}</div>
+                  <button
+                    className={styles.menuItem}
+                    onClick={() => {
+                      setMenuOpen(false)
+                      navigate('/vender')
+                    }}
+                  >
+                    {customer?.isSeller ? 'Mi tienda' : 'Vender'}
+                  </button>
                   <button
                     className={styles.menuItem}
                     onClick={() => {

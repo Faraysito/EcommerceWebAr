@@ -1,5 +1,8 @@
 import { z } from 'zod'
-import { Environment, IntegrationCommerceCodes, IntegrationApiKeys } from 'transbank-sdk'
+// transbank-sdk es CommonJS: se importa el default y se desestructura, porque
+// los named imports de ESM no están garantizados sobre un módulo CJS.
+import transbankSdk from 'transbank-sdk'
+const { Environment, IntegrationCommerceCodes, IntegrationApiKeys } = transbankSdk
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),

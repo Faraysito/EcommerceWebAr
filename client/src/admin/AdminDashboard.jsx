@@ -5,13 +5,15 @@ import CategoriesManager from './CategoriesManager'
 import ProductsManager from './ProductsManager'
 import FilesManager from './FilesManager'
 import UsersManager from './UsersManager'
+import MarketplaceManager from './MarketplaceManager'
 import styles from './AdminDashboard.module.css'
 
 const TABS = [
   { id: 'products', label: 'Productos' },
   { id: 'categories', label: 'Categorías' },
   { id: 'files', label: 'Archivos' },
-  { id: 'users', label: 'Usuarios' }
+  { id: 'users', label: 'Usuarios' },
+  { id: 'marketplace', label: 'Marketplace' }
 ]
 
 export default function AdminDashboard() {
@@ -57,6 +59,7 @@ export default function AdminDashboard() {
         {activeTab === 'categories' && <CategoriesManager />}
         {activeTab === 'files' && <FilesManager />}
         {activeTab === 'users' && <UsersManager />}
+        {activeTab === 'marketplace' && <MarketplaceManager />}
       </main>
     </div>
   )

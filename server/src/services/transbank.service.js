@@ -1,5 +1,9 @@
-import { WebpayPlus, Options } from 'transbank-sdk'
+// transbank-sdk es CommonJS: import default + desestructuración (los named
+// imports de ESM no funcionan de forma fiable sobre un módulo CJS).
+import transbankSdk from 'transbank-sdk'
 import { env } from '../config/env.js'
+
+const { WebpayPlus, Options } = transbankSdk
 
 const options = new Options(
   env.TRANSBANK_COMMERCE_CODE,

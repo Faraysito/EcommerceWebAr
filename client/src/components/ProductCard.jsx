@@ -66,6 +66,16 @@ function ProductCard({ product }) {
         <div className={styles.content}>
           <h3 className={styles.name}>{product.name}</h3>
 
+          {product.storeName && product.storeSlug && (
+            <a
+              className={styles.seller}
+              href={`/tienda/${product.storeSlug}`}
+              title={`Ver tienda ${product.storeName}`}
+            >
+              {product.storeName}
+            </a>
+          )}
+
           <div className={styles.priceRow}>
             <strong className={styles.price}>{newPrice}</strong>
             {hasDiscount && <span className={styles.oldPrice}>{oldPrice}</span>}

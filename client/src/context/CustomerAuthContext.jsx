@@ -5,10 +5,11 @@ import {
   customerLogout,
   customerVerify
 } from '../services/customer/customerAuthService'
+import { becomeSeller as becomeSellerRequest } from '../services/seller/sellerService'
 
-// Contexto de sesión del CLIENTE de la tienda. Separado de AuthContext, que es
-// para el panel admin. Guarda el cliente logueado y expone login/register/
-// logout. Igual que el admin: la sesión vive en una cookie httpOnly.
+// Contexto de sesión de la CUENTA del marketplace (compra y vende). El payload
+// del backend ahora incluye isSeller / storeName / storeSlug, así el frontend
+// sabe si mostrar el panel de vendedor. La sesión vive en una cookie httpOnly.
 
 const CustomerAuthContext = createContext(null)
 
@@ -40,13 +41,24 @@ export function CustomerAuthProvider({ children }) {
     setCustomer(null)
   }
 
+  // Abre la tienda (o actualiza su perfil). Tras el cambio, vuelve a verificar
+  // la sesión para refrescar isSeller/storeSlug en el estado y la cookie.
+  const becomeSeller = async payload => {
+    await becomeSellerRequest(payload)
+    const fresh = await customerVerify()
+    setCustomer(fresh)
+    return fresh
+  }
+
   const value = {
     customer,
     loading,
     login,
     register,
     logout,
-    isAuthenticated: Boolean(customer)
+    becomeSeller,
+    isAuthenticated: Boolean(customer),
+    isSeller: Boolean(customer?.isSeller)
   }
 
   return <CustomerAuthContext.Provider value={value}>{children}</CustomerAuthContext.Provider>
