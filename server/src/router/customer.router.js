@@ -1,9 +1,6 @@
 import { Router } from 'express'
 import customerAuth from '../middlewares/customer-auth.middleware.js'
-import {
-  uploadImageMiddleware,
-  uploadModelMiddleware
-} from '../middlewares/upload.middleware.js'
+import { uploadImageMiddleware, uploadModelMiddleware } from '../middlewares/upload.middleware.js'
 import {
   customerRegisterController,
   customerLoginController,
@@ -63,18 +60,8 @@ customerRouter.delete('/seller/products/:id', customerAuth, deleteMyProductContr
 // --- Subida de archivos del vendedor (imágenes y modelos 3D de sus productos) ---
 // Reutiliza los controllers de archivos; cualquier vendedor autenticado puede
 // subir. Los archivos quedan en el mismo bucket compartido.
-customerRouter.post(
-  '/seller/images',
-  customerAuth,
-  uploadImageMiddleware,
-  uploadImageController
-)
-customerRouter.post(
-  '/seller/models',
-  customerAuth,
-  uploadModelMiddleware,
-  uploadModelController
-)
+customerRouter.post('/seller/images', customerAuth, uploadImageMiddleware, uploadImageController)
+customerRouter.post('/seller/models', customerAuth, uploadModelMiddleware, uploadModelController)
 
 // --- Ventas y ganancias del vendedor ---
 customerRouter.get('/seller/sales', customerAuth, mySalesController)

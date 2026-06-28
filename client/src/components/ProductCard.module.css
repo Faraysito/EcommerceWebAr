@@ -1,12 +1,12 @@
 .card {
-  width: 200px;
-  background: #fff;
-  border-radius: 12px;
+  position: relative;
+  width: 100%;
+  background: var(--surface-1);
+  border-radius: var(--radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease,
@@ -14,18 +14,20 @@
 }
 
 .card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: #eaeaea;
+  box-shadow: var(--shadow-glow);
+  border-color: var(--accent);
   transform: translateY(-3px);
 }
 
-/* Imagen siempre cuadrada (1:1) y recortada con cover. Sea cual sea la
-   imagen original, ocupa exactamente el mismo espacio. */
+.thumbLink {
+  display: block;
+}
+
 .thumbWrap {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: #f5f5f5;
+  background: var(--surface-2);
   overflow: hidden;
 }
 
@@ -38,7 +40,7 @@
 }
 
 .card:hover .thumb {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -50,22 +52,27 @@
   }
 }
 
-/* Placeholder cuando el producto no tiene imagen cargada. */
 .thumbPlaceholder {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #cfcfcf;
-  background: repeating-linear-gradient(45deg, #f3f3f3, #f3f3f3 10px, #efefef 10px, #efefef 20px);
+  color: var(--text-muted);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--surface-2),
+    var(--surface-2) 10px,
+    var(--surface-1) 10px,
+    var(--surface-1) 20px
+  );
 }
 
 .discountBadge {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: #ff4747;
+  background: var(--discount-bg);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 700;
@@ -74,11 +81,29 @@
   z-index: 2;
 }
 
+.arBadge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(10, 20, 32, 0.78);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 6px;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
 .soldOut {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   color: #fff;
   font-size: 0.7rem;
   font-weight: 600;
@@ -87,33 +112,88 @@
   z-index: 2;
 }
 
-/* Contenido con altura fija para que todas las cards sean idénticas aunque
-   el nombre sea de 1 o 2 lineas. */
+.favFloat {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+}
+
 .content {
-  padding: 10px 12px 12px;
+  padding: 12px 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  height: 196px;
+}
+
+.nameLink {
+  color: inherit;
 }
 
 .name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #222;
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 2.43em;
+  min-height: 2.43em;
+}
+
+.nameLink:hover .name {
+  color: var(--accent);
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--price);
+}
+
+.oldPrice {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.ratingCount {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.sold {
+  color: var(--text-muted);
 }
 
 .seller {
   font-size: 0.78rem;
-  color: #ff5b1a;
-  text-decoration: none;
+  color: var(--mint);
   font-weight: 600;
   display: block;
   white-space: nowrap;
@@ -125,49 +205,20 @@
   text-decoration: underline;
 }
 
-.priceRow {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.price {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #ff4747;
-}
-
-.oldPrice {
-  font-size: 0.82rem;
-  color: #999;
-  text-decoration: line-through;
-}
-
 .stockLine {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.74rem;
+  color: var(--text-muted);
 }
 
-/* La primera fila de acciones (Agregar) se empuja al fondo; la segunda
-   (Detalles / Ver AR) queda justo debajo. */
 .actions {
   display: flex;
   gap: 8px;
-}
-
-.actions:first-of-type {
-  margin-top: auto;
-}
-
-.actions + .actions {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .btnCart {
   flex: 1;
-  border: none;
-  border-radius: 99px;
+  border-radius: var(--radius-pill);
   padding: 9px 10px;
   font-size: 0.82rem;
   font-weight: 700;
@@ -176,64 +227,41 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: #fff3ec;
-  color: #ff6a00;
-  border: 1px solid #ffd9bf;
-  transition:
-    background 0.15s,
-    filter 0.15s;
+  background: var(--grad-accent);
+  color: var(--text-on-accent);
+  border: none;
+  transition: filter 0.15s;
 }
 
 .btnCart:hover:not(:disabled) {
-  background: #ffe8d6;
+  filter: brightness(1.08);
 }
 
 .btnCart:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
-  background: #f2f2f2;
-  color: #999;
-  border-color: #e6e6e6;
+  background: var(--surface-3);
+  color: var(--text-muted);
 }
 
-.btnDesc,
 .btnAr {
-  flex: 1;
-  border: none;
-  border-radius: 99px;
-  padding: 8px 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  width: 42px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  background: var(--surface-2);
+  color: var(--accent);
   transition:
-    filter 0.15s,
-    background 0.15s;
-}
-
-.btnDesc {
-  background: #f5f5f5;
-  color: #444;
-}
-
-.btnDesc:hover {
-  background: #ececec;
-}
-
-.btnAr {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .btnAr:hover {
-  filter: brightness(1.05);
-}
-
-@media (max-width: 520px) {
-  .card {
-    width: 100%;
-  }
+  background: var(--surface-3);
+  border-color: var(--accent);
 }

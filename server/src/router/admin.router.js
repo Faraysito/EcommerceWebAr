@@ -90,7 +90,11 @@ adminRouter.post('/users', requirePermission('user.create'), createUserControlle
 adminRouter.delete('/users/:id', requirePermission('user.delete'), deleteUserController)
 
 // --- Marketplace: configuración (comisión) ---
-adminRouter.get('/marketplace/settings', requirePermission('marketplace.read'), getSettingsController)
+adminRouter.get(
+  '/marketplace/settings',
+  requirePermission('marketplace.read'),
+  getSettingsController
+)
 adminRouter.put(
   '/marketplace/settings',
   requirePermission('marketplace.update'),

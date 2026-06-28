@@ -2,14 +2,14 @@
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: #f5f5f5;
+  background: var(--bg-base);
   padding: 20px;
 }
 
 .form {
   width: 100%;
   max-width: 380px;
-  background: #fff;
+  background: var(--surface-1);
   border-radius: 16px;
   padding: 36px 28px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
@@ -20,28 +20,28 @@
 
 .logo {
   font-size: 2rem;
-  color: #ff4747;
+  color: var(--accent);
   text-align: center;
 }
 
 .title {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #222;
+  color: var(--text-primary);
   text-align: center;
   margin: 0;
 }
 
 .subtitle {
   font-size: 0.85rem;
-  color: #888;
+  color: var(--text-muted);
   text-align: center;
   margin: 0 0 8px;
 }
 
 .error {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
   border: 1px solid #f5c6c6;
   border-radius: 8px;
   padding: 10px 12px;
@@ -54,11 +54,11 @@
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .input {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 0.9rem;
@@ -67,17 +67,17 @@
 }
 
 .input:focus {
-  border-color: #ff4747;
+  border-color: var(--accent);
 }
 
 .input:disabled {
-  background: #f5f5f5;
+  background: var(--bg-base);
 }
 
 .button {
   margin-top: 6px;
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border: none;
   border-radius: 99px;
   padding: 12px;

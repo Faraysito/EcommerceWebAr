@@ -1,26 +1,47 @@
-import { createContext, useContext, useMemo, useState } from 'react'
-
-// Carrito de compras (estado en memoria, no se persiste). Guarda líneas
-// { ...product, quantity }. El precio que cuenta para el total es el de oferta
-// si existe (discountActive/discountedPrice los manda el backend). Aun así, el
-// total REAL lo recalcula el backend en el checkout: esto es solo para mostrar.
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+// Carrito de compras PERSISTENTE (guarda en localStorage). Misma API publica
+// que el original. Es el unico contexto de carrito: Header, CartModal,
+// ProductCard y demas importan SIEMPRE desde aca (./context/CartContext).
+//
+// Para usarlo: reemplaza el import de CartProvider/useCart en main.jsx por
+// este archivo, o renombra este a CartContext.jsx (haz respaldo del original).
 
 const CartContext = createContext(null)
+const STORAGE_KEY = 'ecommercewebar.cart.v1'
 
-// Precio unitario a mostrar para una línea (respeta oferta vigente).
 function linePrice(item) {
   return item.discountActive ? item.discountedPrice : item.price
 }
 
+// Carga inicial defensiva: si el JSON está corrupto, parte vacío.
+function loadInitial() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState(loadInitial)
   const [isOpen, setIsOpen] = useState(false)
+
+  // Persiste en cada cambio del carrito.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    } catch {
+      // Si localStorage no está disponible (modo privado, etc.), no rompemos.
+    }
+  }, [items])
 
   const addToCart = product => {
     setItems(prev => {
       const existing = prev.find(p => p.id === product.id)
       if (existing) {
-        // No superar el stock disponible.
         const nextQty = Math.min(existing.quantity + 1, product.stock)
         return prev.map(p => (p.id === product.id ? { ...p, quantity: nextQty } : p))
       }

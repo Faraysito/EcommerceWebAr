@@ -5,8 +5,8 @@
 }
 
 .section {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
 }
@@ -21,13 +21,13 @@
 .title {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #222;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .uploadBtn {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border-radius: 99px;
   padding: 9px 18px;
   font-size: 0.85rem;
@@ -41,8 +41,8 @@
 }
 
 .error {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
   border: 1px solid #f5c6c6;
   border-radius: 8px;
   padding: 10px 12px;
@@ -50,7 +50,7 @@
 }
 
 .muted {
-  color: #999;
+  color: var(--text-muted);
   font-size: 0.9rem;
   padding: 12px 0;
 }
@@ -62,24 +62,24 @@
 }
 
 .imageCard {
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: #fafafa;
+  background: var(--surface-2);
 }
 
 .thumb {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  background: #eee;
+  background: var(--border);
 }
 
 .fileName {
   font-size: 0.75rem;
-  color: #555;
+  color: var(--text-secondary);
   padding: 8px 8px 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -88,7 +88,7 @@
 
 .deleteBtn {
   margin: 6px 8px 8px;
-  background: #fff;
+  background: var(--surface-1);
   color: #e24b4a;
   border: 1px solid #f0b0b0;
   border-radius: 99px;
@@ -101,7 +101,7 @@
 
 .deleteBtn:hover {
   background: #e24b4a;
-  color: #fff;
+  color: var(--text-on-accent);
 }
 
 .modelList {
@@ -115,13 +115,13 @@
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fafafa;
+  background: var(--surface-2);
 }
 
 .modelIcon {
-  color: #ff6a00;
+  color: var(--accent-2);
   font-size: 1.1rem;
 }
 

@@ -87,8 +87,8 @@ export default function SellerStoreForm() {
       className={styles.form}
       onSubmit={handleSubmit}
       style={{
-        background: '#fff',
-        border: '1px solid #ececec',
+        background: 'var(--surface-1)',
+        border: '1px solid var(--border)',
         borderRadius: 16,
         padding: 24,
         maxWidth: 640

@@ -1,0 +1,37 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.star {
+  display: block;
+}
+
+.filled {
+  fill: #f5a623;
+}
+
+.half {
+  fill: url(#halfGrad);
+  fill: #f5a623;
+  opacity: 0.55;
+}
+
+.empty {
+  fill: #d8d8d8;
+}
+
+.count {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}

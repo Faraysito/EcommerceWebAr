@@ -104,9 +104,11 @@ Luego, como siempre:
 ## Mapa de archivos nuevos y modificados
 
 ### Base de datos
+
 - **nuevo** `database/05-migration-marketplace.sql`
 
 ### Backend (`server/src`)
+
 - **servicios reescritos:** `services/customer.service.js` (cuenta unificada
   comprador/vendedor + slugs de tienda), `services/product.service.js`
   (pertenencia por vendedor), `services/sale.service.js` (división por vendedor,
@@ -123,6 +125,7 @@ Luego, como siempre:
   `schemas/env-schema.js` y `services/transbank.service.js` (fix de import)
 
 ### Frontend (`client/src`)
+
 - **páginas nuevas:** `pages/SellerDashboard.jsx`, `pages/StorePage.jsx`,
   `pages/StoresDirectory.jsx` (+ sus `.module.css`)
 - **componentes de vendedor nuevos:** `components/seller/BecomeSellerCta.jsx`,

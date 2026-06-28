@@ -6,13 +6,13 @@
 }
 
 .subtab {
-  background: #fff;
+  background: var(--surface-1);
   border: 1px solid #e0e0e0;
   border-radius: 99px;
   padding: 8px 18px;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #666;
+  color: var(--text-secondary);
   cursor: pointer;
   transition:
     background 0.15s,
@@ -21,24 +21,24 @@
 }
 
 .subtab:hover {
-  color: #333;
+  color: var(--text-primary);
 }
 
 .active {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border-color: transparent;
 }
 
 .muted {
-  color: #999;
+  color: var(--text-muted);
   text-align: center;
   padding: 40px 0;
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
   max-width: 520px;
@@ -52,7 +52,7 @@
 }
 
 .cardText {
-  color: #777;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin: 0 0 18px;
 }
@@ -65,27 +65,27 @@
 
 .input {
   width: 110px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-strong);
   border-radius: 10px;
   padding: 11px 13px;
   font-size: 1rem;
-  color: #222;
+  color: var(--text-primary);
 }
 
 .input:focus {
   outline: none;
-  border-color: #ff6a00;
+  border-color: var(--accent-2);
 }
 
 .percent {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .primaryBtn {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border: none;
   border-radius: 99px;
   padding: 11px 24px;
@@ -99,8 +99,8 @@
 }
 
 .error {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
   border: 1px solid #f5c6c6;
   border-radius: 10px;
   padding: 12px 14px;
@@ -120,8 +120,8 @@
 
 .tableWrap {
   overflow-x: auto;
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 14px;
 }
 
@@ -134,17 +134,17 @@
 .table th {
   text-align: left;
   padding: 12px 14px;
-  background: #fafafa;
-  color: #777;
+  background: var(--surface-2);
+  color: var(--text-muted);
   font-weight: 600;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 
 .table td {
   padding: 12px 14px;
   border-bottom: 1px solid #f3f3f3;
-  color: #333;
+  color: var(--text-primary);
   vertical-align: middle;
 }
 
@@ -154,11 +154,11 @@
 
 .hint {
   font-size: 0.78rem;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .link {
-  color: #ff5b1a;
+  color: var(--mint);
   text-decoration: none;
 }
 
@@ -167,15 +167,15 @@
 }
 
 .inlineSelect {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   padding: 6px 8px;
   font-size: 0.82rem;
-  background: #fff;
+  background: var(--surface-1);
   cursor: pointer;
 }
 
 .inlineSelect:focus {
   outline: none;
-  border-color: #ff6a00;
+  border-color: var(--accent-2);
 }

@@ -7,7 +7,8 @@ import { HTTP_STATUS } from '../utils/httpStatus.js'
 // abre su tienda (auto-aprobado, sin revisión de admin).
 
 // Campos públicos del cliente que se exponen en sesión / respuestas.
-const CUSTOMER_PUBLIC = 'id, email, name, is_seller, store_name, store_slug, store_bio, seller_since'
+const CUSTOMER_PUBLIC =
+  'id, email, name, is_seller, store_name, store_slug, store_bio, seller_since'
 
 // Crea un cliente. La contraseña llega YA hasheada desde el controller.
 const createCustomer = async ({ email, password, name }) => {
@@ -16,6 +17,8 @@ const createCustomer = async ({ email, password, name }) => {
     .insert({ email, password, name: name ?? null })
     .select(CUSTOMER_PUBLIC)
     .single()
+
+  if (error) console.error('createCustomer Supabase error >>>', error) // TEMP
 
   if (error || !data) {
     if (error?.code === '23505') {

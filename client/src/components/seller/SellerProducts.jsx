@@ -128,7 +128,8 @@ export default function SellerProducts() {
 
     if (!form.name.trim()) return setError('El nombre es obligatorio.')
     if (!form.categoryId) return setError('Elige una categoría.')
-    if (!Number.isInteger(price) || price <= 0) return setError('El precio debe ser un entero mayor a 0.')
+    if (!Number.isInteger(price) || price <= 0)
+      return setError('El precio debe ser un entero mayor a 0.')
     if (!Number.isInteger(stock) || stock < 0) return setError('El stock debe ser 0 o más.')
 
     const payload = {
@@ -195,8 +196,8 @@ export default function SellerProducts() {
           className={styles.form}
           onSubmit={handleSubmit}
           style={{
-            background: '#fff',
-            border: '1px solid #ececec',
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border)',
             borderRadius: 16,
             padding: 22,
             marginBottom: 22

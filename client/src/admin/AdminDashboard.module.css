@@ -1,11 +1,11 @@
 .shell {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg-base);
 }
 
 .header {
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
   padding: 14px 24px;
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
 .brand {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #ff4747;
+  color: var(--accent);
 }
 
 .userBox {
@@ -26,12 +26,12 @@
 
 .email {
   font-size: 0.88rem;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .badge {
   background: #fff0e6;
-  color: #ff6a00;
+  color: var(--accent-2);
   font-size: 0.72rem;
   font-weight: 700;
   padding: 3px 10px;
@@ -40,26 +40,26 @@
 }
 
 .logout {
-  background: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background: var(--bg-base);
+  border: 1px solid var(--border-strong);
   border-radius: 99px;
   padding: 7px 16px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #444;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .logout:hover {
-  background: #ff4747;
-  border-color: #ff4747;
-  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
 }
 
 .tabs {
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
   padding: 0 24px;
   display: flex;
   gap: 4px;
@@ -72,18 +72,18 @@
   padding: 14px 18px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #888;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .tab:hover {
-  color: #ff4747;
+  color: var(--accent);
 }
 
 .tabActive {
-  color: #ff4747;
-  border-bottom-color: #ff4747;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .main {
@@ -93,20 +93,20 @@
 }
 
 .placeholder {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 32px;
 }
 
 .placeholder h2 {
   font-size: 1.3rem;
-  color: #222;
+  color: var(--text-primary);
   margin: 0 0 12px;
 }
 
 .placeholder p {
-  color: #888;
+  color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
 }

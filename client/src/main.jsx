@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router'
 import { routes } from './routes'
 import { AuthProvider } from './context/AuthContext'
 import { CustomerAuthProvider } from './context/CustomerAuthContext'
+import { WishlistProvider } from './context/WishlistContext'
 import { CartProvider } from './context/CartContext'
 import CartModal from './components/CartModal'
 
@@ -14,15 +15,14 @@ import './assets/global.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* AuthProvider = sesion del admin. CustomerAuthProvider = sesion del
-        cliente que compra. CartProvider = carrito. El CartModal vive aqui
-        para estar disponible en cualquier pagina. */}
     <AuthProvider>
       <CustomerAuthProvider>
-        <CartProvider>
-          <RouterProvider router={routes} />
-          <CartModal />
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <RouterProvider router={routes} />
+            <CartModal />
+          </CartProvider>
+        </WishlistProvider>
       </CustomerAuthProvider>
     </AuthProvider>
   </StrictMode>

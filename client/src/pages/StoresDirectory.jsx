@@ -48,9 +48,7 @@ export default function StoresDirectory() {
                   className={styles.storeCard}
                   href={`/tienda/${s.storeSlug}`}
                 >
-                  <div className={styles.avatar}>
-                    {s.storeName?.[0]?.toUpperCase() || '?'}
-                  </div>
+                  <div className={styles.avatar}>{s.storeName?.[0]?.toUpperCase() || '?'}</div>
                   <div className={styles.storeName}>{s.storeName}</div>
                   {s.storeBio && <p className={styles.storeBio}>{s.storeBio}</p>}
                   <span className={styles.visit}>Visitar tienda →</span>

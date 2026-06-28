@@ -65,9 +65,7 @@ const getStoreController = async (req, res) => {
 const listStoresController = async (req, res) => {
   const stores = await listStores()
   // En la versión pública no exponemos el email del vendedor.
-  return res.status(HTTP_STATUS.ok).json(
-    stores.map(({ email, ...rest }) => rest)
-  )
+  return res.status(HTTP_STATUS.ok).json(stores.map(({ email, ...rest }) => rest))
 }
 
 export {

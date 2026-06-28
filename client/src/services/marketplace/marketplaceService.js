@@ -13,5 +13,4 @@ export const updateSettings = commissionPercent =>
 export const getSellers = () => apiGet('/admin/marketplace/sellers')
 export const getPayouts = status =>
   apiGet(`/admin/marketplace/payouts${status ? `?status=${status}` : ''}`)
-export const updatePayout = (id, status) =>
-  apiPut(`/admin/marketplace/payouts/${id}`, { status })
+export const updatePayout = (id, status) => apiPut(`/admin/marketplace/payouts/${id}`, { status })

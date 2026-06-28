@@ -1,7 +1,7 @@
 .modelViewer {
   width: 100%;
   height: 100%;
-  background: linear-gradient(160deg, #fafafa 0%, #eef0f2 100%);
+  background: linear-gradient(160deg, var(--surface-2) 0%, #eef0f2 100%);
 }
 
 .loaderWrapper {
@@ -26,13 +26,13 @@
 
 .loaderBar {
   height: 100%;
-  background: #ff4747;
+  background: var(--accent);
   border-radius: 99px;
   transition: width 0.2s ease;
 }
 
 .loaderLabel {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 600;
 }

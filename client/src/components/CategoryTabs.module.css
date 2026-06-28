@@ -12,24 +12,24 @@
 
 .tab {
   flex-shrink: 0;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 99px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
   padding: 8px 18px;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .tab:hover {
-  border-color: #ff4747;
-  color: #ff4747;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .tab.active {
-  background: #ff4747;
-  border-color: #ff4747;
-  color: #fff;
+  background: var(--grad-accent);
+  border-color: transparent;
+  color: var(--text-on-accent);
 }

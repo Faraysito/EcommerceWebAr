@@ -24,7 +24,7 @@
 }
 
 .contentModal {
-  background: #fff;
+  background: var(--surface-1);
   border-radius: 14px;
   width: min(560px, 100%);
   height: min(620px, 90vh);
@@ -44,19 +44,19 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
 .headerTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #222;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .btnClose {
-  background: #f5f5f5;
+  background: var(--bg-base);
   border: none;
   border-radius: 50%;
   width: 34px;
@@ -64,16 +64,26 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #555;
+  color: var(--text-secondary);
   transition: background 0.15s;
 }
 
 .btnClose:hover {
-  background: #ececec;
+  background: var(--border);
 }
 
 .modalBody {
   flex: 1;
   overflow: auto;
   min-height: 0;
+}
+
+/* Ajustes tema HubLab */
+.modal::backdrop {
+  background: rgba(4, 12, 20, 0.72);
+  backdrop-filter: blur(3px);
+}
+.contentModal {
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-strong);
 }

@@ -10,7 +10,7 @@
   max-height: 320px;
   object-fit: contain;
   border-radius: 10px;
-  background: #f5f5f5;
+  background: var(--bg-base);
   padding: 12px;
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #cfcfcf;
+  color: var(--text-muted);
   border-radius: 10px;
   background: repeating-linear-gradient(45deg, #f3f3f3, #f3f3f3 10px, #efefef 10px, #efefef 20px);
 }
@@ -28,7 +28,7 @@
 .description {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #444;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -50,6 +50,6 @@
 }
 
 .outStock {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
 }

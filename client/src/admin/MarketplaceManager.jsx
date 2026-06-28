@@ -157,11 +157,7 @@ function SellersPanel() {
                   /tienda/{s.storeSlug}
                 </a>
               </td>
-              <td>
-                {s.sellerSince
-                  ? new Date(s.sellerSince).toLocaleDateString('es-CL')
-                  : '—'}
-              </td>
+              <td>{s.sellerSince ? new Date(s.sellerSince).toLocaleDateString('es-CL') : '—'}</td>
             </tr>
           ))}
         </tbody>
@@ -208,7 +204,11 @@ function PayoutsPanel() {
   if (loading) return <p className={styles.muted}>Cargando pagos…</p>
   if (error) return <div className={styles.error}>{error}</div>
   if (payouts.length === 0)
-    return <p className={styles.muted}>No hay pagos pendientes. Aparecerán cuando haya ventas pagadas.</p>
+    return (
+      <p className={styles.muted}>
+        No hay pagos pendientes. Aparecerán cuando haya ventas pagadas.
+      </p>
+    )
 
   return (
     <div>

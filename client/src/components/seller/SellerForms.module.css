@@ -10,8 +10,8 @@
 }
 
 .ctaCard {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 36px 34px;
   max-width: 560px;
@@ -22,7 +22,7 @@
 .badge {
   display: inline-block;
   background: #fff0e9;
-  color: #ff5b1a;
+  color: var(--mint);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -40,7 +40,7 @@
 }
 
 .ctaText {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.96rem;
   margin: 0 0 18px;
 }
@@ -57,7 +57,7 @@
 .perks li {
   position: relative;
   padding-left: 26px;
-  color: #444;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -68,8 +68,8 @@
   top: 0;
   width: 18px;
   height: 18px;
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   font-size: 0.7rem;
   font-weight: 700;
   border-radius: 50%;
@@ -103,19 +103,19 @@
 .label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .input,
 .textarea,
 .select {
   width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-strong);
   border-radius: 10px;
   padding: 11px 13px;
   font-size: 0.92rem;
-  color: #222;
-  background: #fff;
+  color: var(--text-primary);
+  background: var(--surface-1);
   transition: border-color 0.15s;
 }
 
@@ -123,7 +123,7 @@
 .textarea:focus,
 .select:focus {
   outline: none;
-  border-color: #ff6a00;
+  border-color: var(--accent-2);
 }
 
 .textarea {
@@ -133,13 +133,13 @@
 
 .hint {
   font-size: 0.78rem;
-  color: #999;
+  color: var(--text-muted);
 }
 
 /* ---------- Botones ---------- */
 .primaryBtn {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border: none;
   border-radius: 99px;
   padding: 12px 26px;
@@ -160,9 +160,9 @@
 }
 
 .ghostBtn {
-  background: #fff;
-  color: #555;
-  border: 1px solid #ddd;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
   border-radius: 99px;
   padding: 8px 18px;
   font-size: 0.85rem;
@@ -171,7 +171,7 @@
 }
 
 .ghostBtn:hover {
-  background: #f7f7f7;
+  background: var(--bg-base);
 }
 
 .dangerBtn {
@@ -192,7 +192,7 @@
 .linkBtn {
   background: none;
   border: none;
-  color: #ff5b1a;
+  color: var(--mint);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -205,8 +205,8 @@
 
 /* ---------- Mensajes ---------- */
 .error {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
   border: 1px solid #f5c6c6;
   border-radius: 10px;
   padding: 12px 14px;
@@ -223,7 +223,7 @@
 }
 
 .muted {
-  color: #999;
+  color: var(--text-muted);
   font-size: 0.92rem;
   text-align: center;
   padding: 40px 0;
@@ -254,8 +254,8 @@
 }
 
 .prodCard {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   display: flex;
@@ -275,7 +275,7 @@
   background: #f3f3f3;
   display: grid;
   place-items: center;
-  color: #ccc;
+  color: var(--text-muted);
   font-size: 0.8rem;
 }
 
@@ -290,19 +290,19 @@
 .prodName {
   font-size: 0.92rem;
   font-weight: 600;
-  color: #222;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .prodMeta {
   font-size: 0.82rem;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .prodPrice {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #ff4747;
+  color: var(--accent);
 }
 
 .prodActions {
@@ -314,8 +314,8 @@
 /* ---------- Tabla de ventas / payouts ---------- */
 .tableWrap {
   overflow-x: auto;
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 14px;
 }
 
@@ -328,17 +328,17 @@
 .table th {
   text-align: left;
   padding: 12px 14px;
-  background: #fafafa;
-  color: #777;
+  background: var(--surface-2);
+  color: var(--text-muted);
   font-weight: 600;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 
 .table td {
   padding: 12px 14px;
   border-bottom: 1px solid #f3f3f3;
-  color: #333;
+  color: var(--text-primary);
   vertical-align: middle;
 }
 
@@ -392,8 +392,8 @@
 }
 
 .metricCard {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 18px 20px;
 }
@@ -405,7 +405,7 @@
 
 .metricLabel {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-muted);
   margin: 0 0 6px;
 }
 
@@ -416,7 +416,7 @@
 }
 
 .metricValueAccent {
-  color: #ff4747;
+  color: var(--accent);
 }
 
 /* ---------- Estado vacío ---------- */
@@ -426,26 +426,26 @@
   align-items: center;
   gap: 14px;
   padding: 48px 16px;
-  color: #888;
-  background: #fff;
-  border: 1px dashed #ddd;
+  color: var(--text-muted);
+  background: var(--surface-1);
+  border: 1px dashed var(--border-strong);
   border-radius: 16px;
   text-align: center;
 }
 
 /* ---------- Selector de estado en tabla ---------- */
 .inlineSelect {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   padding: 6px 8px;
   font-size: 0.82rem;
-  background: #fff;
+  background: var(--surface-1);
   cursor: pointer;
 }
 
 .inlineSelect:focus {
   outline: none;
-  border-color: #ff6a00;
+  border-color: var(--accent-2);
 }
 
 /* ---------- Subida de archivos / thumbs ---------- */
@@ -487,7 +487,7 @@
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  color: var(--text-on-accent);
   font-size: 0.7rem;
   cursor: pointer;
   display: grid;

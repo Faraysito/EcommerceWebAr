@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f5;
+  background: var(--bg-base);
 }
 
 .main {
@@ -22,26 +22,26 @@
 .title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #222;
+  color: var(--text-primary);
   margin: 0 0 4px;
 }
 
 .subtitle {
-  color: #777;
+  color: var(--text-muted);
   font-size: 0.92rem;
   margin: 0;
 }
 
 .muted {
-  color: #999;
+  color: var(--text-muted);
   font-size: 0.95rem;
   text-align: center;
   padding: 40px 0;
 }
 
 .error {
-  background: #fdeaea;
-  color: #c0392b;
+  background: var(--danger-bg);
+  color: var(--danger);
   border: 1px solid #f5c6c6;
   border-radius: 10px;
   padding: 14px 16px;
@@ -54,15 +54,15 @@
   align-items: center;
   gap: 16px;
   padding: 48px 16px;
-  color: #888;
-  background: #fff;
-  border: 1px solid #ececec;
+  color: var(--text-muted);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
 }
 
 .primaryBtn {
-  background: linear-gradient(135deg, #ff6a00, #ff4747);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: var(--text-on-accent);
   border: none;
   border-radius: 99px;
   padding: 11px 26px;
@@ -86,8 +86,8 @@
 }
 
 .orderCard {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px 22px;
 }
@@ -105,13 +105,13 @@
   display: block;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #222;
+  color: var(--text-primary);
 }
 
 .orderDate {
   display: block;
   font-size: 0.8rem;
-  color: #999;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -161,11 +161,11 @@
 }
 
 .lineName {
-  color: #444;
+  color: var(--text-secondary);
 }
 
 .lineSub {
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -177,10 +177,10 @@
   padding-top: 14px;
   border-top: 1px solid #f2f2f2;
   font-size: 0.92rem;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .orderTotal {
   font-size: 1.2rem;
-  color: #ff4747;
+  color: var(--accent);
 }

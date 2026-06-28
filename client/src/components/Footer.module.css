@@ -5,7 +5,7 @@
   grid-template-columns: 1fr 1.2fr 1.2fr 1fr;
   align-items: start;
   gap: 1rem;
-  background: #1f1f1f;
+  background: var(--bg-base);
   border-radius: 0;
   padding: 2.75rem 24px 1.5rem;
   color: rgba(255, 255, 255, 0.86);
@@ -37,7 +37,7 @@
 }
 
 .footerBrand {
-  color: #ff6a00;
+  color: var(--accent);
   font-size: 1.4rem;
   font-weight: 800;
   margin: 0;
@@ -90,8 +90,8 @@
 }
 
 .footerLinksList a:hover {
-  color: #ff6a00;
-  border-color: rgba(255, 106, 0, 0.6);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .socialList {
@@ -114,7 +114,7 @@
 }
 
 .socialItem:hover {
-  color: #ff6a00;
+  color: var(--accent);
 }
 
 .socialIcon {
@@ -240,4 +240,19 @@
   .footerMapFrame {
     height: 150px;
   }
+}
+
+/* Borde superior para separar del contenido (tema HubLab) */
+.siteFooter {
+  border-top: 1px solid var(--border);
+}
+.statusOpen {
+  background: var(--success-bg);
+  color: var(--mint);
+  border-color: rgba(61, 217, 164, 0.35);
+}
+.statusClosed {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: rgba(239, 90, 90, 0.3);
 }
