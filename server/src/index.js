@@ -1,60 +1,8 @@
+import app from './app.js'
 import { env } from './config/env.js'
-import express from 'express'
 
-// Controllers and Routes
-import { healthCheckController } from './controllers/health-check.controller.js'
-import { authRouter } from './router/auth.router.js'
-import { publicRouter } from './router/public.router.js'
-import { adminRouter } from './router/admin.router.js'
-import { customerRouter } from './router/customer.router.js'
-
-// Routers NUEVOS (este paquete)
-import { publicExtrasRouter } from './router/public-extras.router.js'
-import { customerExtrasRouter } from './router/customer-extras.router.js'
-import { adminExtrasRouter } from './router/admin-extras.router.js'
-
-// Middlewares
-import cookieParser from 'cookie-parser'
-import { notFound } from './middlewares/not-found.middleware.js'
-import { corsMiddleware } from './middlewares/cors.middleware.js'
-import { errorMiddleware } from './middlewares/error.middleware.js'
-import { rateLimit } from './middlewares/rate-limit.middleware.js'
-
-// REEMPLAZO de src/index.js.
-// Cambios respecto al original:
-//   1. Monta los routers nuevos (reseñas, similares, wishlist, direcciones,
-//      moderación admin).
-//   2. Aplica rate limiting a login/registro de admin y cliente y al checkout.
-// Todo lo demás queda igual al original.
-
-const app = express()
-
-// Middlewares
-app.use(corsMiddleware)
-app.use(express.json())
-app.use(cookieParser())
-
-// Rate limiting en endpoints sensibles (fuerza bruta / abuso).
-app.use('/api/auth/login', rateLimit({ windowMs: 60_000, max: 10 }))
-app.use('/api/auth/register', rateLimit({ windowMs: 60_000, max: 10 }))
-app.use('/api/customer/auth/login', rateLimit({ windowMs: 60_000, max: 10 }))
-app.use('/api/customer/auth/register', rateLimit({ windowMs: 60_000, max: 10 }))
-app.use('/api/customer/checkout', rateLimit({ windowMs: 60_000, max: 20 }))
-
-// Routes
-app.get('/api/health', healthCheckController)
-app.use('/api/auth', authRouter)
-app.use('/api/customer', customerRouter) // auth del cliente + checkout + pedidos
-app.use('/api/customer', customerExtrasRouter) // reseñas/wishlist/direcciones del cliente
-app.use('/api', publicRouter) // /api/products, /api/categories (publico)
-app.use('/api', publicExtrasRouter) // reseñas públicas + productos similares
-app.use('/api/admin', adminRouter) // CRUD protegido
-app.use('/api/admin', adminExtrasRouter) // moderación de reseñas
-
-// Middlewares
-app.use(notFound)
-app.use(errorMiddleware)
-
+// Solo para desarrollo local. En Vercel el entrypoint es server/api/index.js
+// y este archivo no se ejecuta.
 app.listen(env.PORT, () => {
   console.log(`Server running on port ${env.PORT}`)
 })

@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "installCommand": "npm install --workspaces=false",
+  "buildCommand": "",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+}
