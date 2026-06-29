@@ -5,6 +5,7 @@ import { ProtectedRoute } from './admin/ProtectedRoute'
 
 // Code-splitting: las páginas pesadas se cargan bajo demanda.
 const DirectARViewer = lazy(() => import('./pages/DirectARViewer'))
+const EmbedViewer = lazy(() => import('./pages/EmbedViewer'))
 const Orders = lazy(() => import('./pages/Orders'))
 const SellerDashboard = lazy(() => import('./pages/SellerDashboard'))
 const StorePage = lazy(() => import('./pages/StorePage'))
@@ -29,6 +30,8 @@ const routes = createBrowserRouter([
   { path: '/', element: <Catalog /> },
   { path: '/producto/:id', element: s(<ProductPage />) },
   { path: '/ar/:productId', element: s(<DirectARViewer />) },
+  // Página desnuda del visor AR para incrustar vía iframe en tiendas externas.
+  { path: '/ver/:id', element: s(<EmbedViewer />) },
   { path: '/pedidos', element: s(<Orders />) },
   { path: '/favoritos', element: s(<WishlistPage />) },
   { path: '/cuenta', element: s(<AccountPage />) },

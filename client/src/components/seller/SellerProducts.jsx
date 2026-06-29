@@ -8,18 +8,60 @@ import {
   uploadSellerModel
 } from '../../services/seller/sellerService'
 import { getCategories } from '../../services/categories/getCategories'
-import { formatCLP } from '../../utils/formatCLP'
 import styles from './SellerForms.module.css'
 
 const EMPTY = {
   name: '',
   description: '',
-  price: '',
-  stock: '',
   categoryId: '',
   images: [], // [{ id, url }]
   modelId: null,
-  modelName: ''
+  modelName: '',
+  widthCm: '',
+  heightCm: '',
+  depthCm: ''
+}
+
+// Arma el snippet del iframe que el vendedor pega en su tienda externa.
+function buildEmbed(id) {
+  const base = window.location.origin
+  return `<iframe src="${base}/ver/${id}" width="100%" height="500" style="border:0;" allow="camera; xr-spatial-tracking" allowfullscreen></iframe>`
+}
+
+// Bloque por producto: caja con el código del iframe + botón copiar.
+function EmbedBox({ id }) {
+  const [copied, setCopied] = useState(false)
+  const code = buildEmbed(id)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+    } catch {
+      // Fallback si el navegador bloquea la API de portapapeles.
+      const ta = document.createElement('textarea')
+      ta.value = code
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      document.body.removeChild(ta)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1800)
+  }
+
+  return (
+    <div className={styles.embedBox}>
+      <span className={styles.embedLabel}>Código para tu tienda</span>
+      <code className={styles.embedCode}>{code}</code>
+      <button
+        type='button'
+        className={styles.ghostBtn}
+        onClick={copy}
+      >
+        {copied ? '¡Copiado!' : 'Copiar código'}
+      </button>
+    </div>
+  )
 }
 
 export default function SellerProducts() {
@@ -64,14 +106,15 @@ export default function SellerProducts() {
     setForm({
       name: p.name,
       description: p.description || '',
-      price: String(p.price),
-      stock: String(p.stock),
       categoryId: p.categoryId || '',
       images: (p.images || []).map(i => ({ id: i.id, url: i.url })),
       // El producto trae el modelo como URL, no como id editable; al editar no
       // lo recargamos salvo que el vendedor suba uno nuevo.
       modelId: null,
-      modelName: p.model ? 'Modelo 3D actual' : ''
+      modelName: p.model ? 'Modelo 3D actual' : '',
+      widthCm: p.widthCm != null ? String(p.widthCm) : '',
+      heightCm: p.heightCm != null ? String(p.heightCm) : '',
+      depthCm: p.depthCm != null ? String(p.depthCm) : ''
     })
     setShowForm(true)
     setError('')
@@ -121,24 +164,27 @@ export default function SellerProducts() {
     }
   }
 
+  // Parsea un campo de medida: '' -> null; número positivo -> número.
+  const parseDim = v => {
+    if (v === '' || v == null) return null
+    const n = Number(v)
+    return Number.isFinite(n) && n > 0 ? n : null
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
-    const price = Number(form.price)
-    const stock = Number(form.stock)
 
     if (!form.name.trim()) return setError('El nombre es obligatorio.')
     if (!form.categoryId) return setError('Elige una categoría.')
-    if (!Number.isInteger(price) || price <= 0)
-      return setError('El precio debe ser un entero mayor a 0.')
-    if (!Number.isInteger(stock) || stock < 0) return setError('El stock debe ser 0 o más.')
 
     const payload = {
       name: form.name.trim(),
       description: form.description.trim(),
-      price,
-      stock,
       categoryId: form.categoryId,
-      imageIds: form.images.map(i => i.id)
+      imageIds: form.images.map(i => i.id),
+      widthCm: parseDim(form.widthCm),
+      heightCm: parseDim(form.heightCm),
+      depthCm: parseDim(form.depthCm)
     }
     // Solo manda modelId si se subió uno nuevo (al editar, null = no tocar).
     if (form.modelId) payload.modelId = form.modelId
@@ -184,7 +230,7 @@ export default function SellerProducts() {
             className={styles.primaryBtn}
             onClick={openCreate}
           >
-            + Publicar producto
+            + Nuevo producto AR
           </button>
         )}
       </div>
@@ -210,45 +256,19 @@ export default function SellerProducts() {
                 className={styles.input}
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder='Ej: Figura de colección 20cm'
+                placeholder='Ej: Silla de madera'
                 disabled={saving}
               />
             </label>
 
             <label className={`${styles.field} ${styles.fieldFull}`}>
-              <span className={styles.label}>Descripción</span>
+              <span className={styles.label}>Descripción (opcional)</span>
               <textarea
                 className={styles.textarea}
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder='Detalles, materiales, medidas…'
+                placeholder='Materiales, detalles…'
                 rows={3}
-                disabled={saving}
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Precio (CLP)</span>
-              <input
-                className={styles.input}
-                type='number'
-                value={form.price}
-                onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
-                placeholder='9990'
-                min='1'
-                disabled={saving}
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.label}>Stock disponible</span>
-              <input
-                className={styles.input}
-                type='number'
-                value={form.stock}
-                onChange={e => setForm(f => ({ ...f, stock: e.target.value }))}
-                placeholder='10'
-                min='0'
                 disabled={saving}
               />
             </label>
@@ -273,8 +293,50 @@ export default function SellerProducts() {
               </select>
             </label>
 
+            <label className={styles.field}>
+              <span className={styles.label}>Alto (cm)</span>
+              <input
+                className={styles.input}
+                type='number'
+                step='0.1'
+                min='0'
+                value={form.heightCm}
+                onChange={e => setForm(f => ({ ...f, heightCm: e.target.value }))}
+                placeholder='90'
+                disabled={saving}
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span className={styles.label}>Ancho (cm)</span>
+              <input
+                className={styles.input}
+                type='number'
+                step='0.1'
+                min='0'
+                value={form.widthCm}
+                onChange={e => setForm(f => ({ ...f, widthCm: e.target.value }))}
+                placeholder='45'
+                disabled={saving}
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span className={styles.label}>Profundidad (cm)</span>
+              <input
+                className={styles.input}
+                type='number'
+                step='0.1'
+                min='0'
+                value={form.depthCm}
+                onChange={e => setForm(f => ({ ...f, depthCm: e.target.value }))}
+                placeholder='45'
+                disabled={saving}
+              />
+            </label>
+
             <div className={`${styles.field} ${styles.fieldFull}`}>
-              <span className={styles.label}>Fotos del producto</span>
+              <span className={styles.label}>Fotos del producto (opcional)</span>
               <div className={styles.uploadRow}>
                 <label className={styles.ghostBtn}>
                   {uploading ? 'Subiendo…' : 'Subir fotos'}
@@ -315,20 +377,20 @@ export default function SellerProducts() {
             </div>
 
             <div className={`${styles.field} ${styles.fieldFull}`}>
-              <span className={styles.label}>Modelo 3D para Realidad Aumentada (opcional)</span>
+              <span className={styles.label}>Modelo 3D para Realidad Aumentada</span>
               <div className={styles.uploadRow}>
                 <label className={styles.ghostBtn}>
-                  {uploading ? 'Subiendo…' : 'Subir .glb'}
+                  {uploading ? 'Subiendo…' : 'Subir .glb o .usdz'}
                   <input
                     type='file'
-                    accept='.glb,model/gltf-binary'
+                    accept='.glb,.usdz,model/gltf-binary,model/vnd.usdz+zip'
                     onChange={handleModelUpload}
                     disabled={saving || uploading}
                     style={{ display: 'none' }}
                   />
                 </label>
                 <span className={styles.hint}>
-                  {form.modelName || 'Archivo .glb, hasta 50MB. Permite "Ver en AR".'}
+                  {form.modelName || '.glb (Android) o .usdz (iPhone), hasta 50MB.'}
                 </span>
               </div>
             </div>
@@ -342,7 +404,7 @@ export default function SellerProducts() {
               type='submit'
               disabled={saving || uploading}
             >
-              {saving ? 'Guardando…' : editingId ? 'Guardar cambios' : 'Publicar producto'}
+              {saving ? 'Guardando…' : editingId ? 'Guardar cambios' : 'Crear producto'}
             </button>
             <button
               className={styles.ghostBtn}
@@ -358,12 +420,12 @@ export default function SellerProducts() {
 
       {products.length === 0 && !showForm ? (
         <div className={styles.empty}>
-          <p>Todavía no publicaste productos.</p>
+          <p>Todavía no creaste productos.</p>
           <button
             className={styles.primaryBtn}
             onClick={openCreate}
           >
-            Publicar mi primer producto
+            Crear mi primer producto AR
           </button>
         </div>
       ) : (
@@ -385,10 +447,17 @@ export default function SellerProducts() {
               <div className={styles.prodBody}>
                 <p className={styles.prodName}>{p.name}</p>
                 <span className={styles.prodMeta}>
-                  {p.categoryName} · {p.stock > 0 ? `${p.stock} en stock` : 'Sin stock'}
+                  {p.heightCm || p.widthCm || p.depthCm
+                    ? `${p.heightCm ?? '—'} × ${p.widthCm ?? '—'} × ${p.depthCm ?? '—'} cm`
+                    : 'Sin medidas'}
                 </span>
-                <span className={styles.prodPrice}>{formatCLP(p.price)}</span>
+                <span className={styles.prodMeta}>
+                  Visto {p.views ?? 0} {(p.views ?? 0) === 1 ? 'vez' : 'veces'} en AR
+                </span>
               </div>
+
+              {p.model && <EmbedBox id={p.id} />}
+
               <div className={styles.prodActions}>
                 <button
                   className={styles.ghostBtn}

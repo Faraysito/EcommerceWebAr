@@ -10,6 +10,10 @@ import { HTTP_STATUS } from '../../utils/httpStatus.js'
 // CRUD de productos PARA EL VENDEDOR logueado. A diferencia del admin, aquí el
 // seller_id se toma del JWT (req.customer.id) y toda mutación valida que el
 // producto sea de su tienda.
+//
+// Herramienta AR: el "producto" se simplifica a nombre + modelo + medidas.
+// price/stock pasan a opcionales (los pone la tienda externa, no esta app).
+// width/height/depth en cm son las medidas reales para escalar el modelo en AR.
 
 // Lista los productos del vendedor.
 const myProductsController = async (req, res) => {
@@ -17,14 +21,19 @@ const myProductsController = async (req, res) => {
   return res.status(HTTP_STATUS.ok).json(products)
 }
 
+const dim = z.number().positive().nullable().optional()
+
 const bodySchema = z.object({
   name: z.string().min(1),
   description: z.string().optional().default(''),
-  price: z.number().int().positive(),
-  stock: z.number().int().min(0),
+  price: z.number().int().min(0).optional(),
+  stock: z.number().int().min(0).optional(),
   categoryId: z.uuidv4(),
   modelId: z.uuidv4().nullable().optional(),
-  imageIds: z.array(z.uuidv4()).optional()
+  imageIds: z.array(z.uuidv4()).optional(),
+  widthCm: dim,
+  heightCm: dim,
+  depthCm: dim
 })
 
 const createMyProductController = async (req, res) => {

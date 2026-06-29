@@ -8,24 +8,27 @@ const storage = multer.memoryStorage()
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 // .glb suele llegar como model/gltf-binary o application/octet-stream.
-const MODEL_TYPES = ['model/gltf-binary', 'application/octet-stream']
+// .usdz (AR en iPhone / Quick Look) llega como model/vnd.usdz+zip o octet-stream.
+const MODEL_TYPES = ['model/gltf-binary', 'model/vnd.usdz+zip', 'application/octet-stream']
 
-function makeUploader({ allowedTypes, maxSizeMb, allowGlbExt = false }) {
+function makeUploader({ allowedTypes, maxSizeMb, modelExt = false }) {
   return multer({
     storage,
     limits: { fileSize: maxSizeMb * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
+      const name = file.originalname.toLowerCase()
       const okType = allowedTypes.includes(file.mimetype)
-      const okExt = allowGlbExt && file.originalname.toLowerCase().endsWith('.glb')
+      // Validación por extensión para modelos 3D: .glb y .usdz.
+      const okExt = modelExt && (name.endsWith('.glb') || name.endsWith('.usdz'))
       if (okType || okExt) return cb(null, true)
       cb(new AppError(HTTP_STATUS.badRequest, 'Tipo de archivo no permitido'))
     }
   }).single('file')
 }
 
-// Imagenes: hasta 5MB. Modelos .glb: hasta 50MB.
+// Imagenes: hasta 5MB. Modelos .glb/.usdz: hasta 50MB.
 const imageUpload = makeUploader({ allowedTypes: IMAGE_TYPES, maxSizeMb: 5 })
-const modelUpload = makeUploader({ allowedTypes: MODEL_TYPES, maxSizeMb: 50, allowGlbExt: true })
+const modelUpload = makeUploader({ allowedTypes: MODEL_TYPES, maxSizeMb: 50, modelExt: true })
 
 // Envuelve el middleware de multer para convertir sus errores (ej. tamaño
 // excedido) en AppError con mensaje claro.

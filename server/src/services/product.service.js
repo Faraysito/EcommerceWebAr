@@ -6,6 +6,9 @@ import { env } from '../config/env.js'
 // Productos del MARKETPLACE: cada producto pertenece a un vendedor (seller_id).
 // El listado público trae el nombre de la tienda para mostrar "Vendido por X",
 // igual que en Temu/AliExpress.
+//
+// Herramienta AR: el producto suma medidas reales (width/height/depth_cm) y un
+// contador de vistas del visor AR (model_view).
 
 const PRODUCT_SELECT = `
   id,
@@ -13,13 +16,17 @@ const PRODUCT_SELECT = `
   description,
   price,
   stock,
+  width_cm,
+  height_cm,
+  depth_cm,
   seller_id,
   created_at,
   category ( id, name ),
   model ( id, name, file_key ),
   product_image ( image ( id, name, file_key ) ),
   offer ( id, discount_type, discount_value, start_date, end_date ),
-  seller:seller_id ( id, store_name, store_slug )
+  seller:seller_id ( id, store_name, store_slug ),
+  model_view ( views )
 `
 
 function publicUrl(fileKey) {
@@ -64,6 +71,10 @@ function shapeProduct(row) {
 
   const { discountActive, discountedPrice, discountPercent } = applyOffer(row)
 
+  // model_view puede venir como objeto, array o null según la relación.
+  const mv = Array.isArray(row.model_view) ? row.model_view[0] : row.model_view
+  const views = mv?.views ?? 0
+
   return {
     id: row.id,
     name: row.name,
@@ -75,6 +86,12 @@ function shapeProduct(row) {
     image: images[0]?.url ?? null,
     images,
     model: publicUrl(row.model?.file_key),
+    // Medidas reales (cm) para escala correcta en AR
+    widthCm: row.width_cm ?? null,
+    heightCm: row.height_cm ?? null,
+    depthCm: row.depth_cm ?? null,
+    // Estadística: veces que se abrió el visor AR
+    views,
     discountActive,
     discountedPrice,
     discountPercent,
@@ -146,18 +163,24 @@ const createProduct = async ({
   stock,
   categoryId,
   modelId,
-  imageIds
+  imageIds,
+  widthCm,
+  heightCm,
+  depthCm
 }) => {
   const { data, error } = await supabase
     .from('product')
     .insert({
       name,
       description,
-      price,
-      stock,
+      price: price ?? 0,
+      stock: stock ?? 0,
       category_id: categoryId,
       model_id: modelId ?? null,
-      seller_id: sellerId
+      seller_id: sellerId,
+      width_cm: widthCm ?? null,
+      height_cm: heightCm ?? null,
+      depth_cm: depthCm ?? null
     })
     .select('id')
     .single()
@@ -182,7 +205,10 @@ const updateProduct = async ({
   stock,
   categoryId,
   modelId,
-  imageIds
+  imageIds,
+  widthCm,
+  heightCm,
+  depthCm
 }) => {
   if (requireOwner) await assertOwnership(id, requireOwner)
 
@@ -195,6 +221,9 @@ const updateProduct = async ({
   if (stock !== undefined) patch.stock = stock
   if (categoryId !== undefined) patch.category_id = categoryId
   if (modelId !== undefined) patch.model_id = modelId ?? null
+  if (widthCm !== undefined) patch.width_cm = widthCm ?? null
+  if (heightCm !== undefined) patch.height_cm = heightCm ?? null
+  if (depthCm !== undefined) patch.depth_cm = depthCm ?? null
 
   if (Object.keys(patch).length > 0) {
     const { error } = await supabase.from('product').update(patch).eq('id', id)
