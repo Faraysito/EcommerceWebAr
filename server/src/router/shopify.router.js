@@ -5,23 +5,30 @@ import {
   shopifyCallbackController
 } from '../controllers/shopify/shopify.controller.js'
 import { listShopifyProductsController } from '../controllers/shopify/shopify-products.controller.js'
+import {
+  listModelsController,
+  listAssignmentsController,
+  assignModelController,
+  unassignModelController
+} from '../controllers/shopify/shopify-assign.controller.js'
 
 const shopifyRouter = Router()
 
 // --- OAuth (Etapa 1) ---
-
-// /auth: el vendedor (cuenta customer) inicia la instalación desde su panel.
-// Requiere sesión de cliente (cookie customer-token) para capturar su id y
-// asociarlo a la tienda en el state firmado.
 shopifyRouter.get('/shopify/auth', customerAuth, shopifyAuthController)
-
-// /callback: lo invoca Shopify, no el navegador del vendedor con su cookie.
-// La seguridad la dan el HMAC y el state firmado, no la sesión.
 shopifyRouter.get('/shopify/callback', shopifyCallbackController)
 
 // --- Catálogo (Etapa 2) ---
-
-// Productos de la tienda Shopify del vendedor. Data privada -> customerAuth.
 shopifyRouter.get('/customer/shopify/products', customerAuth, listShopifyProductsController)
+
+// --- Asociación modelo AR <-> producto (Etapa 3) ---
+// Modelos disponibles para reusar.
+shopifyRouter.get('/customer/models', customerAuth, listModelsController)
+// Qué productos ya tienen modelo.
+shopifyRouter.get('/customer/shopify/assignments', customerAuth, listAssignmentsController)
+// Asignar / reasignar.
+shopifyRouter.post('/customer/shopify/assign', customerAuth, assignModelController)
+// Quitar asignación (POST, no DELETE: el cliente apiDelete no manda body).
+shopifyRouter.post('/customer/shopify/unassign', customerAuth, unassignModelController)
 
 export { shopifyRouter }

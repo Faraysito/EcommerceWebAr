@@ -1,9 +1,23 @@
-import { apiGet } from '../api'
+import { apiGet, apiPost, apiUpload } from '../api'
 
-// Servicio Shopify del vendedor. La conexión OAuth se inicia con una
-// navegación top-level (no fetch), por eso eso NO está aquí. Aquí solo van las
-// llamadas de datos vía API normal (cookie de cliente).
+// Servicio de asociación modelo AR <-> producto Shopify (Etapa 3).
 
-// Lista los productos de la tienda Shopify conectada del vendedor.
-// Devuelve { shop, products: [...] }.
+// Productos de la tienda conectada (Etapa 2).
 export const getShopifyProducts = () => apiGet('/customer/shopify/products')
+
+// Modelos 3D ya subidos, para reusar.
+export const getModels = () => apiGet('/customer/models')
+
+// Qué productos Shopify ya tienen modelo asignado: { shop, assignments: {gid:{...}} }.
+export const getAssignments = () => apiGet('/customer/shopify/assignments')
+
+// Asigna un modelo existente + medidas a un producto Shopify.
+export const assignModel = payload => apiPost('/customer/shopify/assign', payload)
+
+// Quita la asignación de un producto. Usa POST (apiDelete del cliente no manda body).
+export const unassignModel = shopifyProductGid =>
+  apiPost('/customer/shopify/unassign', { shopifyProductGid })
+
+// Sube un .glb nuevo (reusa el endpoint existente del vendedor) y devuelve
+// { id, name, url } del modelo creado, listo para asignar.
+export const uploadModel = (file, name) => apiUpload('/customer/seller/models', file, name)

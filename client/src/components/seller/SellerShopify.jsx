@@ -1,27 +1,27 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'react-router'
 import { env } from '../../config/env'
-import { getShopifyProducts } from '../../services/shopify/shopifyService'
+import { getShopifyProducts, getAssignments } from '../../services/shopify/shopifyService'
+import ShopifyAssignModal from './ShopifyAssignModal'
 import styles from './SellerForms.module.css'
 
-// Conecta la tienda Shopify del vendedor (OAuth) y, una vez conectada, lista
-// sus productos reales traídos de la Admin GraphQL API.
-//
-// La conexión NO usa fetch: redirige el navegador completo a /api/shopify/auth,
-// que continúa el OAuth con Shopify. El listado SÍ usa fetch normal (cookie).
+// Conecta la tienda Shopify (OAuth), lista sus productos, y permite asociar a
+// cada producto un modelo 3D (subir o reusar) con medidas para AR.
 export default function SellerShopify() {
   const [shop, setShop] = useState('')
   const [error, setError] = useState('')
   const [params] = useSearchParams()
 
   const [products, setProducts] = useState([])
+  const [assignments, setAssignments] = useState({}) // { gid: {...} }
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [productsError, setProductsError] = useState('')
   const [connectedShop, setConnectedShop] = useState('')
 
+  const [modalProduct, setModalProduct] = useState(null) // producto en edición
+
   const justConnected = params.get('shopify') === 'connected'
 
-  // Normaliza lo que escribe el vendedor a un dominio xxx.myshopify.com.
   function normalizeShop(raw) {
     let s = raw.trim().toLowerCase()
     s = s.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
@@ -34,28 +34,32 @@ export default function SellerShopify() {
   function handleConnect(e) {
     e.preventDefault()
     setError('')
-
     const clean = normalizeShop(shop)
     if (!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(clean)) {
       setError('Escribe un dominio válido, por ejemplo: mitienda.myshopify.com')
       return
     }
-
     window.location.href = `${env.VITE_API_URL}/api/shopify/auth?shop=${encodeURIComponent(clean)}`
   }
 
-  // Carga los productos de la tienda conectada. Si no hay tienda (404), no es
-  // un error: simplemente el vendedor aún no conectó.
-  const loadProducts = useCallback(async () => {
+  // Carga productos + asignaciones en paralelo.
+  const loadAll = useCallback(async () => {
     setLoadingProducts(true)
     setProductsError('')
     try {
-      const data = await getShopifyProducts() // { shop, products }
-      setConnectedShop(data.shop)
-      setProducts(data.products)
-      setShop(data.shop)
+      const prodData = await getShopifyProducts() // { shop, products }
+      setConnectedShop(prodData.shop)
+      setProducts(prodData.products)
+      setShop(prodData.shop)
+
+      // Asignaciones (si falla, no bloquea la lista).
+      try {
+        const asgData = await getAssignments()
+        setAssignments(asgData.assignments || {})
+      } catch {
+        setAssignments({})
+      }
     } catch (err) {
-      // El backend manda "No tienes ninguna tienda Shopify conectada" en 404.
       if (/no tienes/i.test(err.message)) {
         setConnectedShop('')
         setProducts([])
@@ -68,8 +72,8 @@ export default function SellerShopify() {
   }, [])
 
   useEffect(() => {
-    loadProducts()
-  }, [loadProducts])
+    loadAll()
+  }, [loadAll])
 
   return (
     <div>
@@ -96,15 +100,12 @@ export default function SellerShopify() {
             autoComplete="off"
           />
         </label>
-
         {error && <p className={styles.error}>{error}</p>}
-
         <button type="submit" className={styles.primaryBtn}>
           {connectedShop ? 'Reconectar' : 'Conectar tienda'}
         </button>
       </form>
 
-      {/* --- Listado de productos de Shopify --- */}
       {connectedShop && (
         <>
           <h2 className={styles.sectionTitle} style={{ marginTop: 28 }}>
@@ -120,29 +121,57 @@ export default function SellerShopify() {
 
           {!loadingProducts && products.length > 0 && (
             <div className={styles.cardGrid}>
-              {products.map(p => (
-                <div key={p.id} className={styles.prodCard}>
-                  {p.image ? (
-                    <img className={styles.prodThumb} src={p.image} alt={p.imageAlt} />
-                  ) : (
-                    <div className={styles.prodThumb} />
-                  )}
-                  <div className={styles.prodBody}>
-                    <p className={styles.prodName}>{p.title}</p>
-                    <p className={styles.prodMeta}>
-                      {p.status} · stock: {p.inventory ?? 0}
-                    </p>
-                    {p.price && (
-                      <p className={styles.prodPrice}>
-                        {p.price} {p.currency}
-                      </p>
+              {products.map(p => {
+                const asg = assignments[p.id]
+                return (
+                  <div key={p.id} className={styles.prodCard}>
+                    {p.image ? (
+                      <img className={styles.prodThumb} src={p.image} alt={p.imageAlt} />
+                    ) : (
+                      <div className={styles.prodThumb} />
                     )}
+                    <div className={styles.prodBody}>
+                      <p className={styles.prodName}>{p.title}</p>
+                      <p className={styles.prodMeta}>
+                        {p.status} · stock: {p.inventory ?? 0}
+                      </p>
+                      {p.price && (
+                        <p className={styles.prodPrice}>
+                          {p.price} {p.currency}
+                        </p>
+                      )}
+
+                      {asg ? (
+                        <p className={styles.badge}>AR: {asg.modelName || 'modelo asignado'}</p>
+                      ) : (
+                        <p className={styles.prodMeta}>Sin modelo AR</p>
+                      )}
+
+                      <button
+                        className={styles.primaryBtn}
+                        style={{ marginTop: 8 }}
+                        onClick={() => setModalProduct(p)}
+                        type="button"
+                      >
+                        {asg ? 'Editar AR' : 'Asignar AR'}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </>
+      )}
+
+      {modalProduct && (
+        <ShopifyAssignModal
+          product={modalProduct}
+          current={assignments[modalProduct.id] || null}
+          isOpen={!!modalProduct}
+          close={() => setModalProduct(null)}
+          onSaved={loadAll}
+        />
       )}
     </div>
   )
