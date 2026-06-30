@@ -1,0 +1,20 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "7124aea5b2847e4a95178bb0f0d8c6ae"
+name = "AR Viewer"
+application_url = "https://ecommerce-web-ar-server.vercel.app"
+embedded = false
+
+[webhooks]
+api_version = "2026-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,write_products"
+optional_scopes = [ ]
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://ecommerce-web-ar-server.vercel.app/api/shopify/callback"
+]

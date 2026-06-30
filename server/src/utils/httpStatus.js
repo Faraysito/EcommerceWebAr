@@ -8,7 +8,10 @@ const HTTP_STATUS = {
   conflict: 409,
   // NUEVO: usado por el rate limiter.
   tooManyRequests: 429,
-  internalServerError: 500
+  internalServerError: 500,
+  // NUEVO: usados por el flujo Shopify (errores upstream).
+  badGateway: 502,
+  serviceUnavailable: 503
 }
 
 export { HTTP_STATUS }

@@ -12,6 +12,7 @@ import { publicExtrasRouter } from './router/public-extras.router.js'
 import { customerExtrasRouter } from './router/customer-extras.router.js'
 import { adminExtrasRouter } from './router/admin-extras.router.js'
 import { embedRouter } from './router/embed.router.js'
+import { shopifyRouter } from './router/shopify.router.js'
 
 // Middlewares
 import cookieParser from 'cookie-parser'
@@ -46,6 +47,7 @@ app.use('/api/customer', customerExtrasRouter) // reseñas/wishlist/direcciones 
 app.use('/api', publicRouter) // /api/products, /api/categories (publico)
 app.use('/api', publicExtrasRouter) // reseñas públicas + productos similares
 app.use('/api', embedRouter) // /api/embed/:id (visor AR público para iframe)
+app.use('/api', shopifyRouter) // OAuth de Shopify (/api/shopify/auth, /callback)
 app.use('/api/admin', adminRouter) // CRUD protegido
 app.use('/api/admin', adminExtrasRouter) // moderación de reseñas
 

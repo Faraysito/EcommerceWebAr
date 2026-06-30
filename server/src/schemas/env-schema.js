@@ -31,7 +31,14 @@ const envSchema = z.object({
     .url()
     .min(1)
     .default('http://localhost:3000/api/customer/checkout/commit'),
-  REDIRECT_AFTER_CHECKOUT_TBK: z.url().min(1).default('http://localhost:5173/pedidos')
+  REDIRECT_AFTER_CHECKOUT_TBK: z.url().min(1).default('http://localhost:5173/pedidos'),
+
+  // --- Shopify OAuth ---
+  SHOPIFY_API_KEY: z.string().min(1),
+  SHOPIFY_API_SECRET: z.string().min(1),
+  SHOPIFY_SCOPES: z.string().min(1).default('read_products,write_products'),
+  SHOPIFY_APP_URL: z.url().min(1),
+  SHOPIFY_FRONTEND_URL: z.url().min(1).default('https://ecommerce-web-ar-client.vercel.app')
 })
 
 export { envSchema }
