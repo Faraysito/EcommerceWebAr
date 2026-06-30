@@ -6,7 +6,7 @@ import { env } from '../../config/env.js'
 // capturamos su id para asociarlo a la tienda. Redirige a Shopify.
 function shopifyAuthController(req, res) {
   const { shop } = req.query
-  const sellerId = req.user?.id ?? null
+  const sellerId = req.customer?.id ?? null
 
   const { authUrl } = buildAuthUrl({ shop, sellerId })
   res.redirect(authUrl)

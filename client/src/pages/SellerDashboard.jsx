@@ -7,6 +7,7 @@ import SellerProducts from '../components/seller/SellerProducts'
 import SellerSales from '../components/seller/SellerSales'
 import SellerEarnings from '../components/seller/SellerEarnings'
 import SellerStoreForm from '../components/seller/SellerStoreForm'
+import SellerShopify from '../components/seller/SellerShopify'
 import BecomeSellerCta from '../components/seller/BecomeSellerCta'
 import styles from './SellerDashboard.module.css'
 
@@ -14,7 +15,8 @@ const TABS = [
   { id: 'products', label: 'Mis productos' },
   { id: 'sales', label: 'Ventas' },
   { id: 'earnings', label: 'Ganancias' },
-  { id: 'store', label: 'Mi tienda' }
+  { id: 'store', label: 'Mi tienda' },
+  { id: 'shopify', label: 'Shopify' }
 ]
 
 export default function SellerDashboard() {
@@ -91,6 +93,7 @@ export default function SellerDashboard() {
             {tab === 'sales' && <SellerSales />}
             {tab === 'earnings' && <SellerEarnings />}
             {tab === 'store' && <SellerStoreForm />}
+            {tab === 'shopify' && <SellerShopify />}
           </section>
         </div>
       </main>
