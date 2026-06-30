@@ -88,27 +88,36 @@ export default function SellerShopify() {
         </p>
       )}
 
-      <form onSubmit={handleConnect} className={styles.form}>
+      <form
+        onSubmit={handleConnect}
+        className={styles.form}
+      >
         <label className={styles.label}>
           Dominio de tu tienda Shopify
           <input
             className={styles.input}
-            type="text"
-            placeholder="mitienda.myshopify.com"
+            type='text'
+            placeholder='mitienda.myshopify.com'
             value={shop}
             onChange={e => setShop(e.target.value)}
-            autoComplete="off"
+            autoComplete='off'
           />
         </label>
         {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.primaryBtn}>
+        <button
+          type='submit'
+          className={styles.primaryBtn}
+        >
           {connectedShop ? 'Reconectar' : 'Conectar tienda'}
         </button>
       </form>
 
       {connectedShop && (
         <>
-          <h2 className={styles.sectionTitle} style={{ marginTop: 28 }}>
+          <h2
+            className={styles.sectionTitle}
+            style={{ marginTop: 28 }}
+          >
             Productos en {connectedShop}
           </h2>
 
@@ -124,9 +133,16 @@ export default function SellerShopify() {
               {products.map(p => {
                 const asg = assignments[p.id]
                 return (
-                  <div key={p.id} className={styles.prodCard}>
+                  <div
+                    key={p.id}
+                    className={styles.prodCard}
+                  >
                     {p.image ? (
-                      <img className={styles.prodThumb} src={p.image} alt={p.imageAlt} />
+                      <img
+                        className={styles.prodThumb}
+                        src={p.image}
+                        alt={p.imageAlt}
+                      />
                     ) : (
                       <div className={styles.prodThumb} />
                     )}
@@ -151,7 +167,7 @@ export default function SellerShopify() {
                         className={styles.primaryBtn}
                         style={{ marginTop: 8 }}
                         onClick={() => setModalProduct(p)}
-                        type="button"
+                        type='button'
                       >
                         {asg ? 'Editar AR' : 'Asignar AR'}
                       </button>

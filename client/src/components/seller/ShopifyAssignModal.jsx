@@ -111,19 +111,23 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
   }
 
   return (
-    <Modal isOpen={isOpen} close={close} title={`Modelo AR · ${product?.title ?? ''}`}>
+    <Modal
+      isOpen={isOpen}
+      close={close}
+      title={`Modelo AR · ${product?.title ?? ''}`}
+    >
       <div className={styles.toolbar}>
         <button
           className={mode === 'reuse' ? styles.primaryBtn : styles.ghostBtn}
           onClick={() => setMode('reuse')}
-          type="button"
+          type='button'
         >
           Reusar modelo
         </button>
         <button
           className={mode === 'upload' ? styles.primaryBtn : styles.ghostBtn}
           onClick={() => setMode('upload')}
-          type="button"
+          type='button'
         >
           Subir nuevo
         </button>
@@ -137,9 +141,12 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
             value={modelId}
             onChange={e => setModelId(e.target.value)}
           >
-            <option value="">— Elige un modelo —</option>
+            <option value=''>— Elige un modelo —</option>
             {models.map(m => (
-              <option key={m.id} value={m.id}>
+              <option
+                key={m.id}
+                value={m.id}
+              >
                 {m.name}
               </option>
             ))}
@@ -153,8 +160,8 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
             Archivo .glb
             <input
               className={styles.input}
-              type="file"
-              accept=".glb,model/gltf-binary"
+              type='file'
+              accept='.glb,model/gltf-binary'
               onChange={e => setFile(e.target.files?.[0] ?? null)}
             />
           </label>
@@ -162,8 +169,8 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
             Nombre del modelo (opcional)
             <input
               className={styles.input}
-              type="text"
-              placeholder="ej. Silla Eames"
+              type='text'
+              placeholder='ej. Silla Eames'
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -176,9 +183,9 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
           Ancho (cm)
           <input
             className={styles.input}
-            type="number"
-            min="0"
-            step="0.1"
+            type='number'
+            min='0'
+            step='0.1'
             value={width}
             onChange={e => setWidth(e.target.value)}
           />
@@ -187,9 +194,9 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
           Alto (cm)
           <input
             className={styles.input}
-            type="number"
-            min="0"
-            step="0.1"
+            type='number'
+            min='0'
+            step='0.1'
             value={height}
             onChange={e => setHeight(e.target.value)}
           />
@@ -198,9 +205,9 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
           Profundidad (cm)
           <input
             className={styles.input}
-            type="number"
-            min="0"
-            step="0.1"
+            type='number'
+            min='0'
+            step='0.1'
             value={depth}
             onChange={e => setDepth(e.target.value)}
           />
@@ -209,8 +216,16 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <div className={styles.toolbar} style={{ marginTop: 16 }}>
-        <button className={styles.primaryBtn} onClick={handleSave} disabled={saving} type="button">
+      <div
+        className={styles.toolbar}
+        style={{ marginTop: 16 }}
+      >
+        <button
+          className={styles.primaryBtn}
+          onClick={handleSave}
+          disabled={saving}
+          type='button'
+        >
           {saving ? 'Guardando…' : 'Guardar'}
         </button>
         {current?.modelId && (
@@ -218,7 +233,7 @@ export default function ShopifyAssignModal({ product, current, isOpen, close, on
             className={styles.dangerBtn}
             onClick={handleUnassign}
             disabled={saving}
-            type="button"
+            type='button'
           >
             Quitar modelo
           </button>

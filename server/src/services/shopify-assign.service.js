@@ -37,11 +37,16 @@ async function listAssignments(sellerId) {
 
   const { data, error } = await supabase
     .from('shopify_product_model')
-    .select('shopify_product_gid, model_id, width_cm, height_cm, depth_cm, model:model_id ( id, name, file_key )')
+    .select(
+      'shopify_product_gid, model_id, width_cm, height_cm, depth_cm, model:model_id ( id, name, file_key )'
+    )
     .eq('shop', shop)
 
   if (error) {
-    throw new AppError(HTTP_STATUS.internalServerError, `Error leyendo asignaciones: ${error.message}`)
+    throw new AppError(
+      HTTP_STATUS.internalServerError,
+      `Error leyendo asignaciones: ${error.message}`
+    )
   }
 
   // Mapa { gid: { modelId, modelName, url, width, height, depth } } para lookup O(1) en la UI.
@@ -60,7 +65,15 @@ async function listAssignments(sellerId) {
 }
 
 // --- Asignar (o reasignar) un modelo a un producto Shopify ---
-async function assignModel({ sellerId, shopifyProductGid, productTitle, modelId, widthCm, heightCm, depthCm }) {
+async function assignModel({
+  sellerId,
+  shopifyProductGid,
+  productTitle,
+  modelId,
+  widthCm,
+  heightCm,
+  depthCm
+}) {
   const { shop } = await getStoreBySeller(sellerId)
 
   // Valida que el modelo exista.
@@ -71,7 +84,10 @@ async function assignModel({ sellerId, shopifyProductGid, productTitle, modelId,
     .maybeSingle()
 
   if (modelErr) {
-    throw new AppError(HTTP_STATUS.internalServerError, `Error validando modelo: ${modelErr.message}`)
+    throw new AppError(
+      HTTP_STATUS.internalServerError,
+      `Error validando modelo: ${modelErr.message}`
+    )
   }
   if (!model) {
     throw new AppError(HTTP_STATUS.badRequest, 'El modelo indicado no existe')
@@ -110,7 +126,10 @@ async function unassignModel({ sellerId, shopifyProductGid }) {
     .eq('shopify_product_gid', shopifyProductGid)
 
   if (error) {
-    throw new AppError(HTTP_STATUS.internalServerError, `Error quitando asignación: ${error.message}`)
+    throw new AppError(
+      HTTP_STATUS.internalServerError,
+      `Error quitando asignación: ${error.message}`
+    )
   }
   return { shop, shopifyProductGid }
 }

@@ -5,4 +5,5 @@ api_version = "2026-04"
 [[extensions]]
 name = "AR Viewer"
 handle = "ar-viewer-block"
+uid = "28d96d8f-ea7e-f7fe-6d93-df0bd9d1a864ab501e82"
 type = "theme"

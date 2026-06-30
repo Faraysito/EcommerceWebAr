@@ -32,7 +32,10 @@ async function resolveModel({ shop, productId }) {
     .maybeSingle()
 
   if (error) {
-    throw new AppError(HTTP_STATUS.internalServerError, `Error resolviendo modelo: ${error.message}`)
+    throw new AppError(
+      HTTP_STATUS.internalServerError,
+      `Error resolviendo modelo: ${error.message}`
+    )
   }
   if (!data || !data.model) {
     // No es un error de servidor: este producto simplemente no tiene AR.

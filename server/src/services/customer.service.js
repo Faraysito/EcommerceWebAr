@@ -97,7 +97,7 @@ const becomeSeller = async ({ customerId, storeName, storeBio, payout }) => {
 
   if (!keepOwnSlug) {
     // Busca un slug libre.
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
       const { data: taken } = await supabase
         .from('customer')
