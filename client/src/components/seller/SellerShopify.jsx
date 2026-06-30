@@ -1,25 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'react-router'
 import { env } from '../../config/env'
+import { getShopifyProducts } from '../../services/shopify/shopifyService'
 import styles from './SellerForms.module.css'
 
-// Conecta la tienda Shopify del vendedor con la app (OAuth Etapa 1).
+// Conecta la tienda Shopify del vendedor (OAuth) y, una vez conectada, lista
+// sus productos reales traídos de la Admin GraphQL API.
 //
-// El flujo NO usa fetch: redirige el navegador completo a nuestro backend
-// (/api/shopify/auth), que a su vez redirige a Shopify. Esto es necesario para
-// que (a) viaje la cookie de sesión del vendedor y (b) Shopify pueda mostrar su
-// pantalla de permisos y volver al callback. Un fetch no permite ese ida-y-vuelta.
+// La conexión NO usa fetch: redirige el navegador completo a /api/shopify/auth,
+// que continúa el OAuth con Shopify. El listado SÍ usa fetch normal (cookie).
 export default function SellerShopify() {
   const [shop, setShop] = useState('')
   const [error, setError] = useState('')
   const [params] = useSearchParams()
 
-  // Al volver del callback, la URL trae ?shopify=connected&shop=...
-  const connected = params.get('shopify') === 'connected'
-  const connectedShop = params.get('shop') || ''
+  const [products, setProducts] = useState([])
+  const [loadingProducts, setLoadingProducts] = useState(true)
+  const [productsError, setProductsError] = useState('')
+  const [connectedShop, setConnectedShop] = useState('')
+
+  const justConnected = params.get('shopify') === 'connected'
 
   // Normaliza lo que escribe el vendedor a un dominio xxx.myshopify.com.
-  // Acepta que pegue la URL completa o solo el nombre de la tienda.
   function normalizeShop(raw) {
     let s = raw.trim().toLowerCase()
     s = s.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
@@ -39,13 +41,35 @@ export default function SellerShopify() {
       return
     }
 
-    // Navegación top-level: el backend continúa el OAuth con Shopify.
     window.location.href = `${env.VITE_API_URL}/api/shopify/auth?shop=${encodeURIComponent(clean)}`
   }
 
+  // Carga los productos de la tienda conectada. Si no hay tienda (404), no es
+  // un error: simplemente el vendedor aún no conectó.
+  const loadProducts = useCallback(async () => {
+    setLoadingProducts(true)
+    setProductsError('')
+    try {
+      const data = await getShopifyProducts() // { shop, products }
+      setConnectedShop(data.shop)
+      setProducts(data.products)
+      setShop(data.shop)
+    } catch (err) {
+      // El backend manda "No tienes ninguna tienda Shopify conectada" en 404.
+      if (/no tienes/i.test(err.message)) {
+        setConnectedShop('')
+        setProducts([])
+      } else {
+        setProductsError(err.message)
+      }
+    } finally {
+      setLoadingProducts(false)
+    }
+  }, [])
+
   useEffect(() => {
-    if (connected) setShop(connectedShop)
-  }, [connected, connectedShop])
+    loadProducts()
+  }, [loadProducts])
 
   return (
     <div>
@@ -54,9 +78,9 @@ export default function SellerShopify() {
         Vincula tu tienda Shopify para importar tus productos y asociarles modelos 3D.
       </p>
 
-      {connected && (
+      {justConnected && (
         <p className={styles.success}>
-          Tienda <strong>{connectedShop}</strong> conectada correctamente.
+          Tienda <strong>{params.get('shop')}</strong> conectada correctamente.
         </p>
       )}
 
@@ -76,9 +100,50 @@ export default function SellerShopify() {
         {error && <p className={styles.error}>{error}</p>}
 
         <button type="submit" className={styles.primaryBtn}>
-          {connected ? 'Reconectar' : 'Conectar tienda'}
+          {connectedShop ? 'Reconectar' : 'Conectar tienda'}
         </button>
       </form>
+
+      {/* --- Listado de productos de Shopify --- */}
+      {connectedShop && (
+        <>
+          <h2 className={styles.sectionTitle} style={{ marginTop: 28 }}>
+            Productos en {connectedShop}
+          </h2>
+
+          {loadingProducts && <p className={styles.muted}>Cargando productos…</p>}
+          {productsError && <p className={styles.error}>{productsError}</p>}
+
+          {!loadingProducts && !productsError && products.length === 0 && (
+            <p className={styles.empty}>Tu tienda Shopify no tiene productos.</p>
+          )}
+
+          {!loadingProducts && products.length > 0 && (
+            <div className={styles.cardGrid}>
+              {products.map(p => (
+                <div key={p.id} className={styles.prodCard}>
+                  {p.image ? (
+                    <img className={styles.prodThumb} src={p.image} alt={p.imageAlt} />
+                  ) : (
+                    <div className={styles.prodThumb} />
+                  )}
+                  <div className={styles.prodBody}>
+                    <p className={styles.prodName}>{p.title}</p>
+                    <p className={styles.prodMeta}>
+                      {p.status} · stock: {p.inventory ?? 0}
+                    </p>
+                    {p.price && (
+                      <p className={styles.prodPrice}>
+                        {p.price} {p.currency}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
