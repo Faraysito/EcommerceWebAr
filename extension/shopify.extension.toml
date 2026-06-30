@@ -1,0 +1,8 @@
+# Configuración de la Theme App Extension "AR Viewer".
+# La CLI la usa al hacer `shopify app deploy`.
+api_version = "2026-04"
+
+[[extensions]]
+name = "AR Viewer"
+handle = "ar-viewer-block"
+type = "theme"

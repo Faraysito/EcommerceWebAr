@@ -1,0 +1,64 @@
+{% comment %}
+  Visor AR (AR Viewer) — app block para la página de producto.
+
+  El vendedor lo añade desde el editor de temas, en la página de producto.
+  Al cargar, pregunta a nuestro backend si este producto tiene un modelo 3D
+  asignado (Etapa 3). Si lo tiene, renderiza <model-viewer> con botón AR.
+
+  No usa datos sensibles: el backend solo devuelve la URL pública del .glb.
+{% endcomment %}
+
+<div
+  class="ar-viewer-block"
+  data-ar-endpoint="{{ block.settings.api_base }}/api/shopify/ar"
+  data-shop="{{ shop.permanent_domain }}"
+  data-product-id="{{ product.id }}"
+  style="margin: {{ block.settings.margin }}px 0;"
+>
+  <div class="ar-viewer-status" data-ar-status>
+    {{ block.settings.loading_text }}
+  </div>
+
+  <div class="ar-viewer-mount" data-ar-mount hidden></div>
+</div>
+
+{% comment %} model-viewer de Google: misma librería que ya usas en /ver/:id {% endcomment %}
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<script src="{{ 'ar-viewer.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Visor AR",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "api_base",
+      "label": "URL del backend AR",
+      "default": "https://ecommerce-web-ar-server.vercel.app",
+      "info": "No la cambies salvo que tu backend tenga otro dominio."
+    },
+    {
+      "type": "text",
+      "id": "loading_text",
+      "label": "Texto mientras carga",
+      "default": "Cargando vista AR…"
+    },
+    {
+      "type": "range",
+      "id": "margin",
+      "label": "Margen vertical (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón AR",
+      "default": "Ver en tu espacio"
+    }
+  ]
+}
+{% endschema %}

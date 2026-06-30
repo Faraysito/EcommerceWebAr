@@ -11,6 +11,7 @@ import {
   assignModelController,
   unassignModelController
 } from '../controllers/shopify/shopify-assign.controller.js'
+import { resolveModelController } from '../controllers/shopify/shopify-embed.controller.js'
 
 const shopifyRouter = Router()
 
@@ -18,17 +19,17 @@ const shopifyRouter = Router()
 shopifyRouter.get('/shopify/auth', customerAuth, shopifyAuthController)
 shopifyRouter.get('/shopify/callback', shopifyCallbackController)
 
+// --- Resolución pública del modelo AR (Etapa 4) ---
+// La consume el visor en el storefront del vendedor. SIN auth (CORS abierto).
+shopifyRouter.get('/shopify/ar', resolveModelController)
+
 // --- Catálogo (Etapa 2) ---
 shopifyRouter.get('/customer/shopify/products', customerAuth, listShopifyProductsController)
 
 // --- Asociación modelo AR <-> producto (Etapa 3) ---
-// Modelos disponibles para reusar.
 shopifyRouter.get('/customer/models', customerAuth, listModelsController)
-// Qué productos ya tienen modelo.
 shopifyRouter.get('/customer/shopify/assignments', customerAuth, listAssignmentsController)
-// Asignar / reasignar.
 shopifyRouter.post('/customer/shopify/assign', customerAuth, assignModelController)
-// Quitar asignación (POST, no DELETE: el cliente apiDelete no manda body).
 shopifyRouter.post('/customer/shopify/unassign', customerAuth, unassignModelController)
 
 export { shopifyRouter }
