@@ -13,6 +13,7 @@ import { customerExtrasRouter } from './router/customer-extras.router.js'
 import { adminExtrasRouter } from './router/admin-extras.router.js'
 import { embedRouter } from './router/embed.router.js'
 import { shopifyRouter } from './router/shopify.router.js'
+import { pimRouter } from './router/pim.router.js' // PIM + DAM (Weseller)
 
 // Middlewares
 import cookieParser from 'cookie-parser'
@@ -50,6 +51,7 @@ app.use('/api', embedRouter) // /api/embed/:id (visor AR público para iframe)
 app.use('/api', shopifyRouter) // OAuth de Shopify (/api/shopify/auth, /callback)
 app.use('/api/admin', adminRouter) // CRUD protegido
 app.use('/api/admin', adminExtrasRouter) // moderación de reseñas
+app.use('/api/pim', pimRouter) // PIM + DAM (Weseller)
 
 // Middlewares
 app.use(notFound)

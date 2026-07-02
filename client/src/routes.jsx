@@ -15,6 +15,7 @@ const WishlistPage = lazy(() => import('./pages/WishlistPage'))
 const AccountPage = lazy(() => import('./pages/AccountPage'))
 const AdminLogin = lazy(() => import('./admin/AdminLogin'))
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard'))
+const PimApp = lazy(() => import('./pim/PimApp'))
 
 const Loading = () => (
   <div
@@ -42,6 +43,10 @@ const routes = createBrowserRouter([
   {
     path: '/admin',
     element: <ProtectedRoute>{s(<AdminDashboard />)}</ProtectedRoute>
+  },
+  {
+    path: '/pim',
+    element: <ProtectedRoute>{s(<PimApp />)}</ProtectedRoute>
   }
 ])
 
